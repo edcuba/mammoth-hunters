@@ -1,0 +1,22 @@
+{
+  "name": "iis",
+  "version": "1.0.0",
+  "description": "The ultimate tool for mammoth hunt management.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edynox/iis.git"
+  },
+  "author": "Eduard Čuba",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/edynox/iis/issues"
+  },
+  "homepage": "https://github.com/edynox/iis#readme",
+  "dependencies": {
+    "gentelella": "^1.4.0"
+  }
+}
