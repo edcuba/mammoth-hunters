@@ -19,32 +19,32 @@
     <div class="login_wrapper">
       <div class="animate form login_form">
         <section class="login_content">
-          <form>
+          <form action="login" method="POST">
             <h1>Login Form</h1>
+            {% csrf_token %}
+            {{ loginForm }}
             <div>
-              <input type="text" class="form-control" placeholder="Username" required="" />
+                <input class="btn btn-default submit" type="submit"></input>
             </div>
             <div>
-              <input type="password" class="form-control" placeholder="Password" required="" />
+                <a class="reset_pass" href="#">Lost your password?</a>
             </div>
-            <div>
-              <a class="btn btn-default submit" href="index.html">Log in</a>
-              <a class="reset_pass" href="#">Lost your password?</a>
-            </div>
-
             <div class="clearfix"></div>
+
+            {{ error }}
 
             <div class="separator">
               <p class="change_link">New to site?
                 <a href="#signup" class="to_register"> Create Account </a>
               </p>
 
+
               <div class="clearfix"></div>
               <br />
 
               <div>
-                <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                <h1><i class="fa fa-paw"></i>Mammoth hunters</h1>
+                <p>©2017 All Rights Reserved. Mammoth hunters</p>
               </div>
             </div>
           </form>
