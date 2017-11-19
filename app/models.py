@@ -34,7 +34,6 @@ class Mammoth(Model):
 
 class Hunter(User):
     """ Human being """
-    name = CharField(max_length=64)
     role = IntegerField(choices=ROLES, default=0)
     age = IntegerField(default=0)
     health = IntegerField(default=100)
@@ -42,6 +41,10 @@ class Hunter(User):
     killedBy = ForeignKey(Mammoth, null=True, blank=True)
     # killedIn = ForeignKey(Hunt, null=True)
 
+    class Meta:
+        verbose_name = 'Hunter'
+        verbose_name_plural = 'Hunters'
+
     def __str__(self):
         """ Hunter identification """
-        return self.name
+        return self.username

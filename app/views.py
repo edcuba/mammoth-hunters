@@ -1,14 +1,15 @@
-from django.shortcuts import render
-from .login.views import requireLogin
+from django.shortcuts import render, redirect
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def index(request):
     if not request.user.is_authenticated:
-        return requireLogin(request)
+        return redirect('accounts/login')
 
     context = {}
     return render(request, 'app/index.html', context)
-
 """
 def gentella_html(request):
     if not request.user.is_authenticated:
