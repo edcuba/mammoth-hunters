@@ -46,7 +46,7 @@ class Hunter(User):
     health = IntegerField(default=100)
     available = BooleanField(default=True)
     killedBy = ForeignKey(Mammoth, null=True, blank=True)
-    killedIn = ForeignKey(Hunt, null=True)
+    killedIn = ForeignKey('Hunt', null=True)
 
     class Meta:
         verbose_name = 'Hunter'
