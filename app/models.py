@@ -1,4 +1,5 @@
-from django.db.models import Model, CharField, BooleanField, IntegerField, ForeignKey
+from django.db.models import Model, CharField, BooleanField
+from django.db.models import IntegerField, ForeignKey, ManyToManyField
 from django.contrib.auth.models import User
 
 ROLES = (
@@ -13,7 +14,8 @@ class Location(Model):
 
 
 class Pit(Model):
-    taken = BooleanField()
+    """Pit"""
+    taken = BooleanField(default=False)
     location = ForeignKey(Location)
 
 
@@ -31,6 +33,11 @@ class Mammoth(Model):
         """ Mammoth identification """
         return self.symbol
 
+    class Meta():
+        """Meta"""
+        verbose_name = 'Mammoth'
+        verbose_name_plural = 'Mammoths'
+
 
 class Hunter(User):
     """ Human being """
@@ -39,7 +46,7 @@ class Hunter(User):
     health = IntegerField(default=100)
     available = BooleanField(default=True)
     killedBy = ForeignKey(Mammoth, null=True, blank=True)
-    # killedIn = ForeignKey(Hunt, null=True)
+    killedIn = ForeignKey(Hunt, null=True)
 
     class Meta:
         verbose_name = 'Hunter'
@@ -48,3 +55,36 @@ class Hunter(User):
     def __str__(self):
         """ Hunter identification """
         return self.username
+
+class Abilities(Model):
+    """abilities"""
+    ability = CharField(max_length=128)
+
+class HunterAbilities(Model):
+    """Hunter abilities"""
+    hunter = ForeignKey(Hunter)
+    ability = ForeignKey(Abilities)
+    skill = IntegerField(default=0)
+
+    class Meta():
+        """"Meta"""
+        unique_together = (("hunter", "ability")),
+
+class Watch(Model):
+    """Watch"""
+    location = ForeignKey(Location)
+    hunters = ManyToManyField(Hunter)
+
+class Message(Model):
+    """Message"""
+    from_watch = ForeignKey(Watch)
+    new_mammoths = IntegerField(default=0)
+    mammoths = ManyToManyField(Mammoth)
+
+class Hunt(Model):
+    """Hunt"""
+    finished = BooleanField(default=True)
+    started_by = ForeignKey(Message)
+    circumstances = CharField(max_length=128)
+    hunters = ManyToManyField(Hunter)
+    pits = ManyToManyField(Pit)
