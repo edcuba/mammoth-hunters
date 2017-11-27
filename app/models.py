@@ -49,6 +49,9 @@ class Hunter(User):
     killedIn = ForeignKey('Hunt', null=True)
 
     class Meta:
+        permissions = (
+            ('see_watches', 'See watches'),
+        )
         verbose_name = 'Hunter'
         verbose_name_plural = 'Hunters'
 

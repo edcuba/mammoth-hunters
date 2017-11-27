@@ -51,12 +51,14 @@
                 Hunts
             </a>
         </li>
+        {% if perms.see_watches %}
         <li>
             <a href="{% url "index" %}">
                 <i class="fa fa-home"></i>
                 Watches
             </a>
         </li>
+        {% endif %}
         <li>
             <a href="{% url "index" %}">
                 <i class="fa fa-home"></i>

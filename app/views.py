@@ -49,7 +49,7 @@ def register(request):
             hunter.groups.add(g)
 
             # now you can log in
-            return index(request)
+            return redirect('/')
         else:
             context['error'] = 'Invalid username or password'
 

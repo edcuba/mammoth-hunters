@@ -59,7 +59,7 @@
                     <img class="img-responsive avatar-view" src="{% static "images/picture.jpg" %}" alt="Avatar" title="Change the avatar">
                   </div>
                 </div>
-                <h3>Samuel Doe</h3>
+                <h3>{{ hunter.username }}</h3>
 
                 <ul class="list-unstyled user_data">
                   <li><i class="fa fa-map-marker user-profile-icon"></i> San Francisco, California, USA
@@ -84,7 +84,7 @@
                   <li>
                     <p>Web Applications</p>
                     <div class="progress progress_sm">
-                      <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
+                      <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{{ hunter }}"></div>
                     </div>
                   </li>
                   <li>
