@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     'app',
     'app.mammoth',
     'app.hunter',
-    'app.hunt'
+    'app.hunt',
+    'app.message',
+    'app.watche',
+    'app.pit'
 ]
 
 MIDDLEWARE = [

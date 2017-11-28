@@ -7,5 +7,7 @@ urlpatterns = [
     url(r'^register', views.register, name='register'),
     url('^hunter', include('app.hunter.urls')),
     url('^mammoth', include('app.mammoth.urls')),
-    url('^hunt', include('app.hunt.urls'))
+    url('^hunt', include('app.hunt.urls')),
+    url('^pit', include('app.pit.urls')),
+    url('^message', include('app.message.urls'))
 ]
