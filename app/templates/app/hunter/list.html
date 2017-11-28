@@ -57,8 +57,7 @@
                         <div class="col-sm-12">
                           <h4 class="brief"><i>Digital Strategist</i></h4>
                           <div class="left col-xs-7">
-                              <form action="{% url "hunter_profile"%}" method="POST">
-                                  {% csrf_token %}
+                              <form action="{% url "hunter_profile"%}" method="GET">
                                   <input type="hidden" name="id_hunter" value="{{ hunter.id }}" />
                                   <a href="#" onclick="parentNode.submit()"><h2>{{ hunter.username }}</h2></a>
                               </form>

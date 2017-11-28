@@ -6,4 +6,4 @@ class HunterCreationForm(UserCreationForm):
 
     class Meta:
         model = Hunter
-        fields = ['username', 'password1', 'password2']
+        fields = ['username', 'password1', 'password2', 'first_name', 'last_name', 'age']

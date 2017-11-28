@@ -1,6 +1,7 @@
 from django.db.models import Model, CharField, BooleanField
 from django.db.models import IntegerField, ForeignKey, ManyToManyField
 from django.contrib.auth.models import User
+from random import random
 
 ROLES = (
     (0, 'Hunter'),
@@ -12,11 +13,19 @@ class Location(Model):
     """ World location """
     place = CharField(max_length=64)
 
+    def __str__(self):
+        return self.place
+
 
 class Pit(Model):
     """Pit"""
     taken = BooleanField(default=False)
     location = ForeignKey(Location)
+
+    def __str__(self):
+        return 'Id: {0}, Loc: {1}, Taken: {2}'.format(self.id,
+                                                      self.location.place,
+                                                      self.taken)
 
 
 class Mammoth(Model):
@@ -46,7 +55,13 @@ class Hunter(User):
     health = IntegerField(default=100)
     available = BooleanField(default=True)
     killedBy = ForeignKey(Mammoth, null=True, blank=True)
-    killedIn = ForeignKey('Hunt', null=True)
+    killedIn = ForeignKey('Hunt', null=True, blank=True)
+
+    Stamina = IntegerField(default=int(100*random()))
+    Strength = IntegerField(default=int(100*random()))
+    Agility = IntegerField(default=int(100*random()))
+    Intellect = IntegerField(default=int(100*random()))
+    Speed = IntegerField(default=int(100*random()))
 
     class Meta:
         permissions = (
@@ -62,6 +77,9 @@ class Hunter(User):
 class Abilities(Model):
     """abilities"""
     ability = CharField(max_length=128)
+    def __str__(self):
+        return self.ability
+
 
 class HunterAbilities(Model):
     """Hunter abilities"""
@@ -72,11 +90,22 @@ class HunterAbilities(Model):
     class Meta():
         """"Meta"""
         unique_together = (("hunter", "ability")),
+    
+    def __str__(self):
+        return '{0}: {1}'.format(self.hunter.username,
+                                 self.ability.ability)
 
 class Watch(Model):
     """Watch"""
     location = ForeignKey(Location)
     hunters = ManyToManyField(Hunter)
+    active = BooleanField(default=True)
+
+    def __str__(self):
+        return "Id: {0}, Loc: {1}, Active: {2}".format(self.id,
+                                                       self.location.place,
+                                                       self.active)
+
 
 class Message(Model):
     """Message"""
@@ -86,7 +115,7 @@ class Message(Model):
 
 class Hunt(Model):
     """Hunt"""
-    finished = BooleanField(default=True)
+    finished = BooleanField(default=False)
     started_by = ForeignKey(Message)
     circumstances = CharField(max_length=128)
     hunters = ManyToManyField(Hunter)

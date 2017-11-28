@@ -103,4 +103,4 @@ ENV/
 node_modules
 package-lock.json
 
-db.sqlite3
+#db.sqlite3
