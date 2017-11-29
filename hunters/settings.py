@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'app.hunter',
     'app.hunt',
     'app.message',
-    'app.watche',
+    'app.watch',
     'app.pit'
 ]
 
