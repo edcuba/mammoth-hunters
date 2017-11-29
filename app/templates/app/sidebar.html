@@ -2,7 +2,7 @@
 
 <div class="left_col scroll-view">
   <div class="navbar nav_title" style="border: 0;">
-    <a href="index.html" class="site_title">
+    <a href="{% url "index" %}" class="site_title">
         <span>Mammoth hunters</span>
     </a>
   </div>
@@ -11,12 +11,16 @@
 
   <!-- menu profile quick info -->
   <div class="profile clearfix">
-    <!--div class="profile_pic">
-      <img src="{% static "images/img.jpg" %}" alt="..." class="img-circle profile_img">
-    </div-->
+    <div class="profile_pic">
+      <img src="{% static "images/fred.png" %}" alt="..." class="img-circle profile_img">
+    </div>
     <div class="profile_info">
-      <span>Welcome,</span>
-      <h2>{{user.username}}</h2>
+        <a href="{% url "hunter_profile" %}">
+            <div>
+                <span>Welcome,</span>
+                <h2>{{user.first_name}} {{user.last_name}}</h2>
+            </div>
+        </a>
     </div>
   </div>
   <!-- /menu profile quick info -->

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from ..models import Hunter, ROLES, HunterAbilities
+from ..models import Hunter, ROLES, HunterAbilities, Watch, Hunt
 
 def profile(request):
     c = {}
@@ -14,6 +14,20 @@ def profile(request):
 """
     skills = HunterAbilities.objects.filter(hunter=hunter.id)
     c['role_name'] = ROLES[hunter.role][1]
+    location = False
+    try:
+        location = Watch.objects.get(hunters=hunter.id, active=True).location
+    finally:
+        pass
+    '''
+    try:
+        location = Hunt.objects.get(hunter=hunter.id, finished=False).started_by.location
+    finally:
+        pass
+    '''
+    if not location:
+        location = 'Cave'
+    c['location'] = location
     c['hunter'] = hunter
     return render(request, 'app/hunter/profile.html', c)
 
