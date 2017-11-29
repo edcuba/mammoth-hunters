@@ -46,19 +46,15 @@
                   </li>
                   <li>
                     <i class="fa fa-briefcase user-profile-icon"></i>
-                    {{ role_name }}
+                    {{ hunter.role_name }}
                   </li>
                   <li>
                     <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                    {% if not hunter.killedBy %}
-                      Alive
-                    {% else %} 
-                      Dead
-                    {%endif%}
+                    {{hunter.alive}}
                   </li>
                   <li>
                       <i class="fa fa-map-marker user-profile-icon"></i>
-                      {{location}}
+                      {{ hunter.location }}
                   </li>
                 </ul>
 
@@ -191,8 +187,46 @@
 
                     </div>
                     <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                      <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
-                        photo booth letterpress, commodo enim craft beer mlkshk </p>
+                        <div class="x_panel">
+                            <div class="x_title">
+                              <h2>{{hunter.first_name}} {{hunter.last_name}} <small>@{{hunter.username}} </small></h2>
+                              
+                              <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                              <br />
+                              <form class="form-horizontal form-label-left" action="" method="POST">
+                                  {% for field in form %}
+                                  <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">{{field.label_tag}}</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                      {{field}}
+                                    </div>
+                                  </div>
+                                  {%endfor%}
+                                <div class="form-group">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Status</label>
+                                  <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" class="form-control" value="{{hunter.alive}}"
+                                        readonly="readonly"
+                                    >
+                                  </div>
+                                </div>
+                                {% if us == 2 %}
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                  <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                      {% csrf_token %}
+                                    <button type="button" class="btn btn-primary">Cancel</button>
+                                    <button type="reset" class="btn btn-primary">Reset</button>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                  </div>
+                                </div>
+                                {%endif%}
+                
+                              </form>
+                            </div>
+                          </div>
                     </div>
                   </div>
                 </div>
