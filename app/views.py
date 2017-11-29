@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from .forms import HunterCreationForm
 from .models import Hunter
+from .logic import topHunters
 
 
 @login_required
@@ -12,6 +13,9 @@ def index(request):
         return redirect('accounts/login')
 
     context = {}
+
+    topHunters(context)
+
     return render(request, 'app/index.html', context)
 """
 def gentella_html(request):
