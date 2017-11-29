@@ -4,7 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from .forms import HunterCreationForm
 from .models import Hunter
-from .logic import topHunters
+from .logic import topHunters, activeHunts
+from .mammoth.forms import MammothForm
+from .message.forms import MessageForm
 
 
 @login_required
@@ -15,6 +17,15 @@ def index(request):
     context = {}
 
     topHunters(context)
+    activeHunts(context)
+
+
+    # hunter is on watch
+    context['onwatch'] = True
+    context['mammothform'] = MammothForm()
+    context['messageform'] = MessageForm()
+
+    # TODO hunter is on hunt
 
     return render(request, 'app/index.html', context)
 """
