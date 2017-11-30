@@ -9,5 +9,6 @@ urlpatterns = [
     url('^mammoth', include('app.mammoth.urls')),
     url('^hunt', include('app.hunt.urls')),
     url('^pit', include('app.pit.urls')),
-    url('^message', include('app.message.urls'))
+    url('^message', include('app.message.urls')),
+    url('^watch', include('app.watch.urls'))
 ]
