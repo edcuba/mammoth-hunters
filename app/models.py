@@ -18,14 +18,12 @@ class Location(Model):
 
 
 class Pit(Model):
-    """Pit"""
+    """ Pit """
     taken = BooleanField(default=False)
     location = ForeignKey(Location)
 
     def __str__(self):
-        return 'Id: {0}, Loc: {1}, Taken: {2}'.format(self.id,
-                                                      self.location.place,
-                                                      self.taken)
+        return '[{}] Loc: {}, Taken: {}'.format(self.id, self.location, self.taken)
 
 
 class Mammoth(Model):
@@ -56,11 +54,11 @@ class Hunter(User):
     killedBy = ForeignKey(Mammoth, null=True, blank=True)
     killedIn = ForeignKey('Hunt', null=True, blank=True)
 
-    Stamina = IntegerField(default=randint(0, 100))
-    Strength = IntegerField(default=randint(0, 100))
-    Agility = IntegerField(default=randint(0, 100))
-    Intellect = IntegerField(default=randint(0, 100))
-    Speed = IntegerField(default=randint(0, 100))
+    Stamina = IntegerField(default=0)
+    Strength = IntegerField(default=0)
+    Agility = IntegerField(default=0)
+    Intellect = IntegerField(default=0)
+    Speed = IntegerField(default=0)
 
     class Meta:
         permissions = (
@@ -72,6 +70,15 @@ class Hunter(User):
     def __str__(self):
         """ Hunter identification """
         return self.username
+
+    def __init__(self, *args, **kwargs):
+        super(User, self).__init__(*args, **kwargs)
+        self.Stamina = randint(0, 100)
+        self.Strength = randint(0, 100)
+        self.Agility = randint(0, 100)
+        self.Intellect = randint(0, 100)
+        self.Speed = randint(0, 100)
+
 
 class Abilities(Model):
     """ Abilities """
@@ -100,9 +107,7 @@ class Watch(Model):
     active = BooleanField(default=True)
 
     def __str__(self):
-        return "Id: {0}, Loc: {1}, Active: {2}".format(self.id,
-                                                       self.location.place,
-                                                       self.active)
+        return "[{}] {}, Active: {}".format(self.id, self.location, self.active)
 
 
 class Message(Model):
@@ -111,10 +116,14 @@ class Message(Model):
     new_mammoths = IntegerField(default=0)
     mammoths = ManyToManyField(Mammoth)
 
+
 class Hunt(Model):
     """ Hunt """
-    finished = BooleanField(default=False)
-    started_by = ForeignKey(Message)
-    circumstances = CharField(max_length=128)
+    target = ForeignKey(Mammoth)
     hunters = ManyToManyField(Hunter)
-    pits = ManyToManyField(Pit)
+    pit = ForeignKey(Pit)
+    finished = BooleanField(default=False)
+    circumstances = CharField(max_length=128, blank=True)
+
+    def __str__(self):
+        return "[{}] Target: {} @ {}".format(self.id, self.target, self.pit.location)
