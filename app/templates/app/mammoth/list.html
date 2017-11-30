@@ -9,7 +9,7 @@
 {% block content %}
 <div class="right_col" role="main">
     <div class="row">
-        <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
               <h2>Taken</h2>
@@ -19,9 +19,10 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
+                    <th>Mammoth symbol</th>
+                    <th>Last location</th>
+                    <th>Status</th>
+                    <th>Hunted</th>
                   </tr>
                   <tr>
                     <div class="input-group">
@@ -33,52 +34,26 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
+                  {%for mammoth in mammoths%}
+                      <tr>
+                        <td>  
+                          <form action="{% url "mammoth_profile"%}" method="GET">
+                            <input type="hidden" name="id_mammoth" value="{{mammoth.id}}" />
+                            <a href="#" onclick="parentNode.submit()">
+                              {{mammoth.symbol}}
+                            </a>
+                          </form>
+                        </td>
+                        <td>{{mammoth.location}}</td>
+                        <td>{{mammoth.status}}</td>
+                        <td>{{mammoth.hunted}}</td>
+                      </tr>
+                  {%endfor%}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
-
-        <!--div class="col-md-6 col-sm-6 col-xs-12">
-          <div class="x_panel">
-            <div class="x_title">
-              <h2>Available</h2>
-              <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                  </tr>
-                  <tr>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
-                        </span>
-                    </div>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div-->
-
     </div>
 </div>
 {% endblock content %}

@@ -48,7 +48,7 @@ def profile(request):
 
     cont['hunts'] = Hunt.objects.filter(hunters=hunter.id)
     for hunt in cont['hunts']:
-        hunt.location = hunt.started_by.from_watch.location
+        hunt.location = hunt.pit.location
     
     cont['watches'] = Watch.objects.filter(hunters=hunter.id)
     for watch in cont['watches']:
