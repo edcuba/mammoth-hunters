@@ -48,9 +48,12 @@
                     {% for hunt in hunts %}
                     <tr>
                     <td>
-                        <a href="{% url "hunt_detail"%}">
-                            {{ hunt.target }}
-                        </a>
+                        <form action="{% url "hunt_detail"%}" method="GET">
+                            <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
+                            <a href="#" onclick="parentNode.submit()">
+                                {{ hunt.target }}
+                            </a>
+                        </form>
                     </td>
                     <td>
                       <ul class="list-inline">

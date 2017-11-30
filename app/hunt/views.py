@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from ..models import Hunt
+from .forms import HuntDetails
 
 
 def huntList(request):
@@ -11,5 +12,14 @@ def huntList(request):
 
 def detail(request):
     context = {}
+    huntID = request.GET.get('id_hunt')
+    if not huntID:
+        return redirect('index')
 
+    try:
+        hunt = Hunt.objects.get(pk=huntID)
+    except:
+        return redirect('index')
+
+    context['form'] = HuntDetails(instance=hunt)
     return render(request, 'app/hunt/detail.html', context)
