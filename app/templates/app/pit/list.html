@@ -1,86 +1,76 @@
 {% extends "app/base_site.html" %}
 
-{% block title %} Tables {% endblock title %}
+{% block title %} Projects {% endblock title %}
 
 {% block stylesheets %}
   {{ block.super }}
 {% endblock stylesheets %}
 
+{% load static %}
+
 {% block content %}
-<div class="right_col" role="main">
-    <div class="row">
-        <div class="col-md-6 col-sm-6 col-xs-12">
-          <div class="x_panel">
-            <div class="x_title">
-              <h2>Taken</h2>
-              <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                  </tr>
-                  <tr>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
-                        </span>
-                    </div>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                </tbody>
-              </table>
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_right">
+          <div class="col-md-12 col-sm-12 col-xs-12 form-group top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="col-md-6 col-sm-6 col-xs-12">
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 ">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Available</h2>
+              <h2>Pits</h2>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <table class="table table-striped">
+              <!-- start project list -->
+              <table class="table table-striped projects">
                 <thead>
                   <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                  </tr>
-                  <tr>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
-                        </span>
-                    </div>
+                    <th>ID</th>
+                    <th>Location</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
+                    {% for pit in pits %}
+                    <tr>
+                        <td>
+                            {{ pit.id }}
+                        </td>
+                        <td>
+                            {{ pit.location }}
+                        </td>
+                        <td>
+                            {% if pit.taken %}
+                            <button type="button" class="btn btn-warning btn-xs">Taken</button>
+                            {% else %}
+                            <button type="button" class="btn btn-success btn-xs">Available</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
               </table>
+              <!-- end project list -->
+
             </div>
           </div>
         </div>
-
+      </div>
     </div>
-</div>
+  </div>
 {% endblock content %}
 
 {% block javascripts %}

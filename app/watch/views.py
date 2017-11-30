@@ -1,3 +1,8 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def detail(request):
+    return render(request, 'app/watch/detail.html')
+
+def watchList(request):
+    return render(request, 'app/watch/list.html')

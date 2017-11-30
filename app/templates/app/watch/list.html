@@ -1,0 +1,98 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Projects {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
+
+{% load static %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_right">
+          <div class="col-md-12 col-sm-12 col-xs-12 form-group top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 ">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Hunts</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <!-- start project list -->
+              <table class="table table-striped projects">
+                <thead>
+                  <tr>
+                    <th>Target</th>
+                    <th>Team Members</th>
+                    <th>Pit</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for hunt in hunts %}
+                    <tr>
+                    <td>
+                        <form action="{% url "hunt_detail"%}" method="GET">
+                            <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
+                            <a href="#" onclick="parentNode.submit()">
+                                {{ hunt.target }}
+                            </a>
+                        </form>
+                    </td>
+                    <td>
+                      <ul class="list-inline">
+                            {% for hunter in hunt.hunters.all %}
+                            <li>
+                                <form action="{% url "hunter_profile"%}" method="GET">
+                                    <input type="hidden" name="id_hunter" value="{{ hunter.id }}" />
+                                    <a href="#" onclick="parentNode.submit()">
+                                        <img title="{{ hunter.username }}" src="{% static "images/fred.png" %}" class="avatar">
+                                    </a>
+                                </form>
+                            </li>
+                            {% endfor %}
+                      </ul>
+                    </td>
+                    <td>
+                        {{ hunt.pit }}
+                    </td>
+                    <td>
+                        {% if hunt.finished %}
+                        <button type="button" class="btn btn-success btn-xs">Finished</button>
+                        {% else %}
+                        <button type="button" class="btn btn-warning btn-xs">In progress</button>
+                        {% endif %}
+                    </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+              <!-- end project list -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+{% endblock javascripts %}
