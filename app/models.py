@@ -1,7 +1,7 @@
 from django.db.models import Model, CharField, BooleanField
 from django.db.models import IntegerField, ForeignKey, ManyToManyField
 from django.contrib.auth.models import User
-from random import random
+from random import randint
 
 ROLES = (
     (0, 'Hunter'),
@@ -34,13 +34,12 @@ class Mammoth(Model):
     health = IntegerField(default=100)
     hunted = BooleanField(default=False)
     behavior = CharField(max_length=128)
-    character = CharField(max_length=128)
     symbol = CharField(max_length=128)
     killedIn = ForeignKey(Pit, null=True, blank=True)
 
     def __str__(self):
         """ Mammoth identification """
-        return self.symbol
+        return "{} {}".format(self.symbol, self.behavior)
 
     class Meta():
         """Meta"""
@@ -57,11 +56,11 @@ class Hunter(User):
     killedBy = ForeignKey(Mammoth, null=True, blank=True)
     killedIn = ForeignKey('Hunt', null=True, blank=True)
 
-    Stamina = IntegerField(default=int(100*random()))
-    Strength = IntegerField(default=int(100*random()))
-    Agility = IntegerField(default=int(100*random()))
-    Intellect = IntegerField(default=int(100*random()))
-    Speed = IntegerField(default=int(100*random()))
+    Stamina = IntegerField(default=randint(0, 100))
+    Strength = IntegerField(default=randint(0, 100))
+    Agility = IntegerField(default=randint(0, 100))
+    Intellect = IntegerField(default=randint(0, 100))
+    Speed = IntegerField(default=randint(0, 100))
 
     class Meta:
         permissions = (
@@ -75,28 +74,27 @@ class Hunter(User):
         return self.username
 
 class Abilities(Model):
-    """abilities"""
+    """ Abilities """
     ability = CharField(max_length=128)
     def __str__(self):
         return self.ability
 
 
 class HunterAbilities(Model):
-    """Hunter abilities"""
+    """ Hunter abilities """
     hunter = ForeignKey(Hunter)
     ability = ForeignKey(Abilities)
     skill = IntegerField(default=0)
 
     class Meta():
-        """"Meta"""
+        """" Meta """
         unique_together = (("hunter", "ability")),
-    
+
     def __str__(self):
-        return '{0}: {1}'.format(self.hunter.username,
-                                 self.ability.ability)
+        return '{}: {}'.format(self.hunter.username, self.ability.ability)
 
 class Watch(Model):
-    """Watch"""
+    """ Watch """
     location = ForeignKey(Location)
     hunters = ManyToManyField(Hunter)
     active = BooleanField(default=True)
@@ -108,13 +106,13 @@ class Watch(Model):
 
 
 class Message(Model):
-    """Message"""
+    """ Message """
     from_watch = ForeignKey(Watch)
     new_mammoths = IntegerField(default=0)
     mammoths = ManyToManyField(Mammoth)
 
 class Hunt(Model):
-    """Hunt"""
+    """ Hunt """
     finished = BooleanField(default=False)
     started_by = ForeignKey(Message)
     circumstances = CharField(max_length=128)

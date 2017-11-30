@@ -8,8 +8,92 @@
 
 {% block content %}
 <div class="right_col" role="main">
-    <div class="row">
+    {% if onhunt or onwatch %}
+    <div class="page-title">
+        <div class="title_left">
+            <h3>
+            {% if onhunt %}
+                On hunt
+            {% endif %}
+            {% if onwatch %}
+                On watch
+            {% endif %}
+            </h3>
+        </div>
+    </div>
 
+    <div class="clearfix"></div>
+
+    <div class="row">
+        {% if onwatch %}
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="x_panel tile">
+                <div class="x_title">
+                    <h2>Add mammoth</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form class="form-horizontal form-label-left" method="POST" action="{% url 'mammoth_create' %}">
+                        {% for field in mammothform %}
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">{{ field.label_tag }}</label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
+                            {{ field }}
+                          </div>
+                        </div>
+                        {% endfor %}
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                            <button type="reset" class="btn btn-primary">Reset</button>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                          </div>
+                        </div>
+                        <input type="hidden" name="next" value="{% url 'index' %}"></input>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="x_panel tile">
+                <div class="x_title">
+                    <h2>Mammoths spotted message</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form class="form-horizontal form-label-left" method="POST" action="{% url 'mammoth_create' %}">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <ul class="to_do">
+                                {% for checkbox in messageform.mammoths %}
+                                <li>
+                                    <p>{{ checkbox.tag }} {{ checkbox.choice_label }}</p>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% csrf_token %}
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <button type="submit" class="btn btn-success">Send</button>
+                          </div>
+                        </div>
+                        <input type="hidden" name="next" value="{% url 'index' %}"></input>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if onhunt %}
+        <div class="col-md-6 col-sm-6 col-xs-12">
+
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="row">
         <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="x_panel tile">
                 <div class="x_title">
@@ -45,10 +129,11 @@
         <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="x_panel tile">
                 <div class="x_title">
-                    <h2>Recent hunts</h2>
+                    <h2>Active hunts</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
+                    {% if hunts %}
                     <table class="table table-striped projects">
                       <thead>
                         <tr>
@@ -75,6 +160,9 @@
                         </tr>
                       </tbody>
                     </table>
+                    {% else %}
+                        <h4>No active hunts</h4>
+                    {% endif %}
                 </div>
             </div>
         </div>
