@@ -3,10 +3,11 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from .forms import HunterCreationForm
-from .models import Hunter
+from .models import Hunter, Hunt
 from .logic import topHunters, activeHunts
 from .mammoth.forms import MammothForm
 from .message.forms import MessageForm
+from .hunt.forms import HuntSubmit
 
 
 @login_required
@@ -26,6 +27,12 @@ def index(request):
     context['messageform'] = MessageForm()
 
     # TODO hunter is on hunt
+    hunt = Hunt.objects.get(pk=1)
+    context['onhunt'] = True
+    context['hunt'] = hunt
+    submitForm = HuntSubmit(instance=hunt)
+    context['huntform'] = submitForm
+
 
     return render(request, 'app/index.html', context)
 """

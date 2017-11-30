@@ -3,5 +3,6 @@ from .views import huntList, detail
 
 urlpatterns = [
     url(r'^list', huntList, name='hunt_list'),
-    url(r'^detail', detail, name='hunt_detail')
+    url(r'^detail', detail, name='hunt_detail'),
+    url(r'^detail', detail, name='hunt_submit')
 ]
