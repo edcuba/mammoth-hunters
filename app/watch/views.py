@@ -1,8 +1,11 @@
 from django.shortcuts import render
+from ..models import Watch
 
-
-def detail(request):
-    return render(request, 'app/watch/detail.html')
 
 def watchList(request):
-    return render(request, 'app/watch/list.html')
+    context = {}
+
+    watches = Watch.objects.all()
+
+    context['watches'] = watches
+    return render(request, 'app/watch/list.html', context)

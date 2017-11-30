@@ -1,7 +1,6 @@
 from django.conf.urls import url
-from .views import watchList, detail
+from .views import watchList
 
 urlpatterns = [
-    url(r'^list', watchList, name='watch_list'),
-    url(r'^detail', detail, name='watch_detail')
+    url(r'^list', watchList, name='watch_list')
 ]
