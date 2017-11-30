@@ -6,7 +6,6 @@ def profile(request):
     cont = {}
     tmp = request.GET.get('id_hunter', request.user.id)
     hunter = Hunter.objects.get(pk=tmp)
-    skills = HunterAbilities.objects.filter(hunter=hunter.id)
     hunter.role_name = ROLES[hunter.role][1]
     location = False
     act = ''
@@ -26,6 +25,7 @@ def profile(request):
     else:
         location = '{0} ({1})'.format(location, act)
     hunter.location = location
+
     if hunter.killedBy:
         hunter.alive = 'Dead'
     else:
@@ -45,6 +45,9 @@ def profile(request):
         if cont['form'].is_valid():
             hunter = cont['form'].save()
     
+
+    cont['hunts'] = Hunt.objects.filter(hunters=hunter.id)
+
     return render(request, 'app/hunter/profile.html', cont)
 
 def hunterList(request):
