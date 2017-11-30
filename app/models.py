@@ -23,7 +23,7 @@ class Pit(Model):
     location = ForeignKey(Location)
 
     def __str__(self):
-        return '[{}] Loc: {}, Taken: {}'.format(self.id, self.location, self.taken)
+        return '[{}] {}'.format(self.id, self.location)
 
 
 class Mammoth(Model):

@@ -1,7 +1,15 @@
 from django.shortcuts import render
+from ..models import Hunt
+
 
 def huntList(request):
-    return render(request, 'app/hunt/list.html')
+    context = {}
+    hunts = Hunt.objects.all()
+    context['hunts'] = hunts
+
+    return render(request, 'app/hunt/list.html', context)
 
 def detail(request):
-    return render(request, 'app/hunt/detail.html')
+    context = {}
+
+    return render(request, 'app/hunt/detail.html', context)
