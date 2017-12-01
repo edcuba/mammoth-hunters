@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from ..models import Watch
 from .forms import WatchForm
 
@@ -13,6 +13,13 @@ def watchList(request):
 
 def detail(request):
     context = {}
+
+    if request.method == 'POST':
+        form = WatchForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('watch_list')
 
     watchID = request.GET.get('id_watch')
 

@@ -30,10 +30,9 @@ class Mammoth(Model):
     """ Mammoth """
     age = IntegerField(default=0)
     health = IntegerField(default=100)
-    hunted = BooleanField(default=False)
     behavior = CharField(max_length=128)
     symbol = CharField(max_length=128)
-    killedIn = ForeignKey(Pit, null=True, blank=True)
+    killedIn = ForeignKey('Hunt', null=True, blank=True)
 
     def __str__(self):
         """ Mammoth identification """
@@ -51,7 +50,6 @@ class Hunter(User):
     age = IntegerField(default=0)
     health = IntegerField(default=100)
     available = BooleanField(default=True)
-    killedBy = ForeignKey(Mammoth, null=True, blank=True)
     killedIn = ForeignKey('Hunt', null=True, blank=True)
 
     Stamina = IntegerField(default=0)
