@@ -36,8 +36,7 @@ def index(request):
             if not hunt.finished:
                 context['onhunt'] = True
                 context['hunt'] = hunt
-                submitForm = HuntSubmit(instance=hunt)
-                context['huntform'] = submitForm
+                context['huntform'] = HuntSubmit(instance=hunt)
                 break
 
 

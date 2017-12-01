@@ -123,8 +123,8 @@
                     <form class="form-horizontal form-label-left" method="POST" action="{% url 'hunt_submit' %}">
                         {% for field in huntform %}
                         <div class="form-group">
-                          <label class="control-label col-md-4 col-sm-4 col-xs-12">{{ field.label_tag }}</label>
-                          <div class="col-md-8 col-sm-8 col-xs-12">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">{{ field.label_tag }}</label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
                             {{ field }}
                           </div>
                         </div>
@@ -196,8 +196,8 @@
                         {% for hunt in hunts %}
                         <tr>
                         <td>
-                            <form action="{% url "hunt_detail"%}" method="GET">
-                                <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
+                            <form action="{% url "mammoth_profile"%}" method="GET">
+                                <input type="hidden" name="id_mammoth" value="{{ hunt.target.id }}" />
                                 <a href="#" onclick="parentNode.submit()">
                                     {{ hunt.target }}
                                 </a>

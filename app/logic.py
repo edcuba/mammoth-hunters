@@ -1,4 +1,15 @@
 from .models import Hunter, Hunt
+from .models import Hunt, Mammoth
+
+def getKills(hunter):
+    hunts = Hunt.objects.filter(hunters=hunter.id)
+    kills = 0
+    mammoths = Mammoth.objects.exclude(killedIn=None)
+    for mammoth in mammoths:
+        if mammoth.killedIn in hunts:
+            kills += 1
+
+    return kills
 
 
 def topHunters(context):
@@ -6,8 +17,8 @@ def topHunters(context):
 
     maxKills = 1
     for hunter in hunters:
-        kills = 0
-        hunter.kills = kills  # TODO
+        kills = getKills(hunter)
+        hunter.kills = kills
         maxKills = max((kills, maxKills))
 
     for hunter in hunters:

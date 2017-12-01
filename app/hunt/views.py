@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from ..models import Hunt
-from .forms import HuntDetails, HuntForm
+from .forms import HuntDetails, HuntForm, HuntSubmit
 from django.urls import reverse
 
 
@@ -54,3 +54,37 @@ def add(request):
     context['form'] = HuntForm()
 
     return render(request, 'app/hunt/detail.html', context)
+
+
+def submit(request):
+    if request.method != 'POST':
+        return redirect('index')
+
+    hunts = Hunt.objects.filter(hunters=request.user.id)
+    form = None
+    # find out if hunter is in unfinished hunt
+    for hunt in hunts:
+        if not hunt.finished:
+            form = HuntSubmit(request.POST, instance=hunt)
+            break
+
+    if not form or not form.is_valid():
+        return redirect('index')
+
+    hunt = form.save()
+    killed = form.cleaned_data.get('mammothKilled')
+
+    if killed:
+        target = hunt.target
+        target.killedIn = hunt
+        target.save()
+
+    died = form.cleaned_data.get('deadHunters', [])
+    for hunter in died:
+        hunter.killedIn = hunt
+        hunter.save()
+
+    hunt.finished = True
+    hunt.save()
+
+    return redirect('index')

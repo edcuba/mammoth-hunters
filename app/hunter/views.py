@@ -26,7 +26,7 @@ def profile(request):
         location = '{0} ({1})'.format(location, act)
     hunter.location = location
 
-    if hunter.killedBy:
+    if hunter.killedIn:
         hunter.alive = 'Dead'
     else:
         hunter.alive = 'Alive'
@@ -35,7 +35,7 @@ def profile(request):
         cont['us'] = Hunter.objects.get(pk=request.user.id).role
     except:
         cont['us'] = 2
-    
+
     cont['form'] = HunterChangeForm(instance=hunter)
     if cont['us'] != 2:
         for field in cont['form'].fields.values():
@@ -44,15 +44,15 @@ def profile(request):
         cont['form'] = HunterChangeForm(request.POST, instance=hunter)
         if cont['form'].is_valid():
             hunter = cont['form'].save()
-    
+
 
     cont['hunts'] = Hunt.objects.filter(hunters=hunter.id)
     for hunt in cont['hunts']:
         hunt.location = hunt.pit.location
-    
+
     cont['watches'] = Watch.objects.filter(hunters=hunter.id)
     for watch in cont['watches']:
-        watch.location = watch.location 
+        watch.location = watch.location
 
     return render(request, 'app/hunter/profile.html', cont)
 
@@ -79,7 +79,7 @@ def hunterList(request):
             location = '{0} ({1})'.format(location, act)
         hunter.location = location
         hunter.role_name = ROLES[hunter.role][1]
-        if hunter.killedBy:
+        if hunter.killedIn:
             hunter.alive = 'Dead'
         else:
             hunter.alive = 'Alive'
