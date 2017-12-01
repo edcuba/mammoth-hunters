@@ -12,8 +12,11 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Taken</h2>
-              <div class="clearfix"></div>
+              <h2>Mammoths</h2>
+              <a href="{% url "mammoth_create"%}">
+                <button class="btn btn-primary pull-right" type="button">Add mammoth</button>
+              </a>
+            <div class="clearfix"></div>
             </div>
             <div class="x_content">
               <table class="table table-striped">
@@ -46,7 +49,14 @@
                         </td>
                         <td>{{mammoth.location}}</td>
                         <td>{{mammoth.status}}</td>
-                        <td>{{mammoth.hunted_w}}</td>
+                        <td>
+                          <form action="{% url "hunt_detail"%}" method="GET">
+                              <input type="hidden" name="id_hunt" value="{{mammoth.hunt_id}}" />
+                              <a href="#" onclick="parentNode.submit()">
+                                {{mammoth.hunted_w}}
+                              </a>
+                          </form>
+                        </td>
                       </tr>
                   {%endfor%}
                 </tbody>

@@ -113,7 +113,6 @@ class Watch(Model):
 class Message(Model):
     """ Message """
     from_watch = ForeignKey(Watch)
-    new_mammoths = IntegerField(default=0)
     mammoths = ManyToManyField(Mammoth)
 
 

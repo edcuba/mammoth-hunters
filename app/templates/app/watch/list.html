@@ -31,6 +31,9 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Watches</h2>
+              <a href="{% url "watch_detail"%}">
+                  <button class="btn btn-primary pull-right" type="button">Add Watch</button>
+                </a>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -42,14 +45,19 @@
                     <th>Location</th>
                     <th>Team Members</th>
                     <th>Status</th>
-                    <th>Edit</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                     {% for watch in watches %}
                     <tr>
                     <td>
-                        {{ watch.id }}
+                        <form action="{% url "watch_detail"%}" method="GET">
+                            <input type="hidden" name="id_watch" value="{{ watch.id }}" />
+                            <a href="#" onclick="parentNode.submit()">
+                                {{ watch.id }}
+                            </a>
+                        </form>
                     </td>
                     <td>
                         {{ watch.location }}
@@ -76,7 +84,9 @@
                         {% endif %}
                     </td>
                     <td>
-                        <!-- TODO -->
+                      {%if watch.active %}
+                        <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> End </a>
+                      {% endif %}
                     </td>
                     </tr>
                     {% endfor %}

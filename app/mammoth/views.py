@@ -21,7 +21,10 @@ def profile(request):
     if not location:
         location = 'Unknown'
     mammoth.location = location
-    hunt = Hunt.objects.filter(target=mammoth.id, finished=False).latest('id')
+    try:
+        hunt = Hunt.objects.filter(target=mammoth.id, finished=False).latest('id')
+    except:
+        hunt = False
     if hunt:
         mammoth.hunted_w = 'Yes'
     else:
@@ -34,6 +37,10 @@ def profile(request):
     cont['hunts'] = Hunt.objects.filter(target=mammoth.id)
     for hunt in cont['hunts']:
         hunt.location = hunt.pit.location
+    
+    cont['messages'] = Message.objects.filter(mammoths=mammoth.id)
+    for message in cont['messages']:
+        message.location = message.from_watch.location
 
     try:
         cont['us'] = Hunter.objects.get(pk=request.user.id).role
@@ -80,6 +87,6 @@ def mammothList(request):
     return render(request, 'app/mammoth/list.html', cont)
 
 def create(request):
-    if request.method == 'POST':
-        return redirect(request.POST['next'])
-    return render(request, 'app/mammoth/profile.html')
+    cont = {}
+    cont['form'] = MammothForm()
+    return render(request, 'app/mammoth/create.html', cont)

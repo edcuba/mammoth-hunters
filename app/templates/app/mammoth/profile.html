@@ -62,7 +62,7 @@
                   <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Last hunts</a>
                     </li>
-                    <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Last watches</a>
+                    <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Last messages</a>
                     </li>
                     <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Profile</a>
                     </li>
@@ -82,7 +82,14 @@
                         <tbody>
                           {%for hunt in hunts%}
                           <tr>
-                            <td>{{hunt.id}} </td>
+                            <td>
+                              <form action="{% url "hunt_detail"%}" method="GET">
+                                  <input type="hidden" name="id_hunt" value="{{hunt.id}}" />
+                                  <a href="#" onclick="parentNode.submit()">
+                                    {{hunt.id}}
+                                  </a>
+                              </form>
+                            </td>
                             <td>{{hunt.location}}</td>
                             <td>{{hunt.finished}} </td>
                           </tr>
@@ -95,17 +102,31 @@
                       <table class="table table-striped">
                         <thead>
                           <tr>
-                            <th>Watch id</th>
+                            <th>Message id</th>
+                            <th>From watch</th>
                             <th>Location</th>
-                            <th>Active</th>
                           </tr>
                         </thead>
                         <tbody>
-                            {%for watch in watches%}
+                            {%for message in messages%}
                               <tr>
-                                <td>{{watch.id}} </td>
-                                <td>{{watch.location}} </td>
-                                <td>{{watch.active}} </td>
+                                <td>
+                                  <form action="{% url "message_detail"%}" method="GET">
+                                      <input type="hidden" name="id_message" value="{{message.id}}" />
+                                      <a href="#" onclick="parentNode.submit()">
+                                        {{message.id}}
+                                      </a>
+                                  </form>
+                                </td>
+                                <td>
+                                  <form action="{% url "watch_detail"%}" method="GET">
+                                      <input type="hidden" name="id_watch" value="{{message.from_watch.id}}" />
+                                      <a href="#" onclick="parentNode.submit()">
+                                          {{message.from_watch}}
+                                      </a>
+                                  </form>
+                                </td>
+                                <td>{{message.location}} </td>
                               </tr>
                             {%endfor%}
                         </tbody>
@@ -130,14 +151,6 @@
                                     </div>
                                   </div>
                                   {%endfor%}
-                                <div class="form-group">
-                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Status</label>
-                                  <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" class="form-control" value="{{hunter.alive}}"
-                                        readonly="readonly"
-                                    >
-                                  </div>
-                                </div>
                                 {% if us == 2 %}
                                 <div class="ln_solid"></div>
                                 <div class="form-group">

@@ -187,27 +187,41 @@
                     <table class="table table-striped projects">
                       <thead>
                         <tr>
-                          <th>Hunt location</th>
-                          <th>Hunters</th>
-                          <th>Status</th>
+                            <th>Target</th>
+                            <th>Team Members</th>
+                            <th>Pit</th>
                         </tr>
                       </thead>
                       <tbody>
+                        {% for hunt in hunts %}
                         <tr>
-                          <td>
-                            <a>Prievidza</a>
-                          </td>
-                          <td>
+                        <td>
+                            <form action="{% url "hunt_detail"%}" method="GET">
+                                <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
+                                <a href="#" onclick="parentNode.submit()">
+                                    {{ hunt.target }}
+                                </a>
+                            </form>
+                        </td>
+                        <td>
                             <ul class="list-inline">
-                              <li>
-                                <img src="/static/images/user.png" class="avatar" alt="Avatar">
-                              </li>
+                                {% for hunter in hunt.hunters.all %}
+                                <li>
+                                    <form action="{% url "hunter_profile"%}" method="GET">
+                                        <input type="hidden" name="id_hunter" value="{{ hunter.id }}" />
+                                        <a href="#" onclick="parentNode.submit()">
+                                            <img title="{{ hunter.username }}" src="{% static "images/fred.png" %}" class="avatar">
+                                        </a>
+                                    </form>
+                                </li>
+                                {% endfor %}
                             </ul>
-                          </td>
-                          <td>
-                            <button type="button" class="btn btn-success btn-xs">Running</button>
-                          </td>
+                        </td>
+                        <td>
+                            {{ hunt.pit }}
+                        </td>
                         </tr>
+                        {% endfor %}
                       </tbody>
                     </table>
                     {% else %}
