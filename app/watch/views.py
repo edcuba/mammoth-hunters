@@ -9,7 +9,7 @@ from ..security import privileged_check
 def watchList(request):
     context = {}
 
-    watches = Watch.objects.all().order_by('-active')
+    watches = Watch.objects.all().order_by('-active', '-id')
 
     context['watches'] = watches
     return render(request, 'app/watch/list.html', context)

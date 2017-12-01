@@ -9,7 +9,7 @@ from ..security import privileged_check
 @login_required
 def huntList(request):
     context = {}
-    hunts = Hunt.objects.all().order_by('finished')
+    hunts = Hunt.objects.all().order_by('finished', '-id')
     context['hunts'] = hunts
 
     return render(request, 'app/hunt/list.html', context)
