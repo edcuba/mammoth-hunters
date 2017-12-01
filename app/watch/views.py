@@ -6,7 +6,7 @@ from .forms import WatchForm
 def watchList(request):
     context = {}
 
-    watches = Watch.objects.all()
+    watches = Watch.objects.all().order_by('-active')
 
     context['watches'] = watches
     return render(request, 'app/watch/list.html', context)
