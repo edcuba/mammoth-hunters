@@ -5,12 +5,12 @@ from .forms import PitForm
 def pitList(request):
     context = {}
 
+    context['form'] = PitForm()
+    if request.method == 'POST':
+        context['form'] = PitForm(request.POST)
+        if context['form'].is_valid():
+            context['form'].save()
     pits = Pit.objects.all()
 
     context['pits'] = pits
-    context['form'] = PitForm()
-
     return render(request, 'app/pit/list.html', context)
-
-def add(request):
-    pass

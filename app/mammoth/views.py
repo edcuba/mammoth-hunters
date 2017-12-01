@@ -89,4 +89,8 @@ def mammothList(request):
 def create(request):
     cont = {}
     cont['form'] = MammothForm()
+    if request.method == 'POST':
+        cont['form'] = MammothForm(request.POST)
+        if cont['form'].is_valid():
+            cont['form'].save()
     return render(request, 'app/mammoth/create.html', cont)
