@@ -33,6 +33,4 @@ def create(request):
     message.from_watch = activeWatch
     message.save()
 
-    activeWatch.active = False
-    activeWatch.save()
     return redirect('index')

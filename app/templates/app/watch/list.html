@@ -52,12 +52,7 @@
                     {% for watch in watches %}
                     <tr>
                     <td>
-                        <form action="{% url "watch_detail"%}" method="GET">
-                            <input type="hidden" name="id_watch" value="{{ watch.id }}" />
-                            <a href="#" onclick="parentNode.submit()">
-                                {{ watch.id }}
-                            </a>
-                        </form>
+                        {{ watch.id }}
                     </td>
                     <td>
                         {{ watch.location }}
@@ -84,9 +79,23 @@
                         {% endif %}
                     </td>
                     <td>
-                      {%if watch.active %}
-                        <a href="#" class="btn btn-warning btn-xs"><i class="fa fa-trash-o"></i> End </a>
-                      {% endif %}
+                        {%if watch.active %}
+                        <form action="{% url "watch_end"%}" method="GET">
+                            <input type="hidden" name="id_watch" value="{{ watch.id }}" />
+                            <a href="#" onclick="parentNode.submit()" class="btn btn-danger btn-xs">
+                                <i class="fa fa-trash-o"></i>
+                                End
+                            </a>
+                        </form>
+                        {% else %}
+                        <form action="{% url "watch_detail"%}" method="GET">
+                            <input type="hidden" name="id_watch" value="{{ watch.id }}" />
+                            <a href="#" onclick="parentNode.submit()" class="btn btn-primary btn-xs">
+                                <i class="fa fa-trash-o"></i>
+                                Edit
+                            </a>
+                        </form>
+                        {% endif %}
                     </td>
                     </tr>
                     {% endfor %}
