@@ -61,7 +61,7 @@ def profile(request):
 def mammothList(request):
     cont = {}
 
-    cont['mammoths'] = Mammoth.objects.all().order_by('killedIn', '-hunt')
+    cont['mammoths'] = Mammoth.objects.all().order_by('killedIn', '-hunt', '-id')
 
     for mammoth in cont['mammoths']:
         try:

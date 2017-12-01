@@ -6,7 +6,7 @@ from django.urls import reverse
 
 def huntList(request):
     context = {}
-    hunts = Hunt.objects.all().order_by('finished')
+    hunts = Hunt.objects.all().order_by('finished', '-id')
     context['hunts'] = hunts
 
     return render(request, 'app/hunt/list.html', context)

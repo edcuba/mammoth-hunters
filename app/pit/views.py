@@ -10,7 +10,7 @@ def pitList(request):
         context['form'] = PitForm(request.POST)
         if context['form'].is_valid():
             context['form'].save()
-    pits = Pit.objects.all()
+    pits = Pit.objects.all().order_by('-id')
 
     context['pits'] = pits
     return render(request, 'app/pit/list.html', context)
