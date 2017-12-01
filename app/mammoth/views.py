@@ -17,7 +17,7 @@ def profile(request):
         location = tmp_loc.pit.location
     except:
         pass
-    
+
     if not location:
         location = 'Unknown'
     mammoth.location = location
@@ -37,7 +37,7 @@ def profile(request):
     cont['hunts'] = Hunt.objects.filter(target=mammoth.id)
     for hunt in cont['hunts']:
         hunt.location = hunt.pit.location
-    
+
     cont['messages'] = Message.objects.filter(mammoths=mammoth.id)
     for message in cont['messages']:
         message.location = message.from_watch.location
@@ -62,7 +62,7 @@ def mammothList(request):
     cont = {}
 
     cont['mammoths'] = Mammoth.objects.all()
-    
+
     for mammoth in cont['mammoths']:
         try:
             tmp_loc = Message.objects.filter(mammoths=mammoth.id).latest('id')
@@ -83,14 +83,19 @@ def mammothList(request):
             mammoth.status = 'Alive'
         else:
             mammoth.status = 'Dead'
-        
+
     return render(request, 'app/mammoth/list.html', cont)
 
-def create(request):
+def create(request, returnToDash=False):
     cont = {}
     cont['form'] = MammothForm()
     if request.method == 'POST':
         cont['form'] = MammothForm(request.POST)
         if cont['form'].is_valid():
             cont['form'].save()
+    if returnToDash:
+        return redirect('index')
     return render(request, 'app/mammoth/create.html', cont)
+
+def createInDash(request):
+    return create(request, returnToDash=True)

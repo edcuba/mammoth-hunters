@@ -34,8 +34,8 @@ class HuntSubmit(HuntForm):
 
 class HuntDetails(ModelForm):
 
-    deadHunters = MultipleChoiceField()
-    mammothKilled = BooleanField(initial=True)
+    deadHunters = MultipleChoiceField(required=False)
+    mammothKilled = BooleanField(initial=True, required=False)
 
     class Meta:
         model = Hunt

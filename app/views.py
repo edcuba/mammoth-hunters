@@ -3,7 +3,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from .forms import HunterCreationForm
-from .models import Hunter, Hunt
+from .models import Hunter, Hunt, Watch
 from .logic import topHunters, activeHunts
 from .mammoth.forms import MammothForm
 from .message.forms import MessageForm
@@ -20,18 +20,25 @@ def index(request):
     topHunters(context)
     activeHunts(context)
 
-
-    # hunter is on watch
-    context['onwatch'] = True
-    context['mammothform'] = MammothForm()
-    context['messageform'] = MessageForm()
-
-    # TODO hunter is on hunt
-    hunt = Hunt.objects.get(pk=1)
-    context['onhunt'] = True
-    context['hunt'] = hunt
-    submitForm = HuntSubmit(instance=hunt)
-    context['huntform'] = submitForm
+    watches = Watch.objects.filter(hunters=request.user.id)
+    # find out if hunter is active watch
+    for watch in watches:
+        if watch.active:
+            context['onwatch'] = True
+            context['mammothform'] = MammothForm()
+            context['messageform'] = MessageForm()
+            break
+    else:
+        # no active watch found
+        hunts = Hunt.objects.filter(hunters=request.user.id)
+        # find out if hunter is in unfinished hunt
+        for hunt in hunts:
+            if not hunt.finished:
+                context['onhunt'] = True
+                context['hunt'] = hunt
+                submitForm = HuntSubmit(instance=hunt)
+                context['huntform'] = submitForm
+                break
 
 
     return render(request, 'app/index.html', context)

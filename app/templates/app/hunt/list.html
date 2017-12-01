@@ -31,7 +31,7 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Hunts</h2>
-              <a href="{% url "hunt_detail"%}">
+              <a href="{% url "hunt_add"%}">
                   <button class="btn btn-primary pull-right" type="button">New hunt</button>
                 </a>
               <div class="clearfix"></div>
@@ -41,47 +41,61 @@
               <table class="table table-striped projects">
                 <thead>
                   <tr>
+                    <th>ID</th>
                     <th>Target</th>
                     <th>Team Members</th>
                     <th>Pit</th>
                     <th>Status</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                     {% for hunt in hunts %}
                     <tr>
-                    <td>
-                        <form action="{% url "hunt_detail"%}" method="GET">
-                            <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
-                            <a href="#" onclick="parentNode.submit()">
-                                {{ hunt.target }}
-                            </a>
-                        </form>
-                    </td>
-                    <td>
-                      <ul class="list-inline">
-                            {% for hunter in hunt.hunters.all %}
-                            <li>
-                                <form action="{% url "hunter_profile"%}" method="GET">
-                                    <input type="hidden" name="id_hunter" value="{{ hunter.id }}" />
-                                    <a href="#" onclick="parentNode.submit()">
-                                        <img title="{{ hunter.username }}" src="{% static "images/fred.png" %}" class="avatar">
-                                    </a>
-                                </form>
-                            </li>
-                            {% endfor %}
-                      </ul>
-                    </td>
-                    <td>
-                        {{ hunt.pit }}
-                    </td>
-                    <td>
-                        {% if hunt.finished %}
-                        <button type="button" class="btn btn-success btn-xs">Finished</button>
-                        {% else %}
-                        <button type="button" class="btn btn-warning btn-xs">In progress</button>
-                        {% endif %}
-                    </td>
+                        <td>
+                            {{ hunt.id }}
+                        </td>
+                        <td>
+                            <form action="{% url "mammoth_profile"%}" method="GET">
+                                <input type="hidden" name="id_mammoth" value="{{ hunt.target.id }}" />
+                                <a href="#" onclick="parentNode.submit()">
+                                    {{ hunt.target }}
+                                </a>
+                            </form>
+                        </td>
+                        <td>
+                          <ul class="list-inline">
+                                {% for hunter in hunt.hunters.all %}
+                                <li>
+                                    <form action="{% url "hunter_profile"%}" method="GET">
+                                        <input type="hidden" name="id_hunter" value="{{ hunter.id }}" />
+                                        <a href="#" onclick="parentNode.submit()">
+                                            <img title="{{ hunter.username }}" src="{% static "images/fred.png" %}" class="avatar">
+                                        </a>
+                                    </form>
+                                </li>
+                                {% endfor %}
+                          </ul>
+                        </td>
+                        <td>
+                            {{ hunt.pit }}
+                        </td>
+                        <td>
+                            {% if hunt.finished %}
+                            <button type="button" class="btn btn-success btn-xs">Finished</button>
+                            {% else %}
+                            <button type="button" class="btn btn-warning btn-xs">In progress</button>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form action="{% url "hunt_detail"%}" method="GET">
+                                <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
+                                <a href="#" onclick="parentNode.submit()" class="btn btn-primary btn-xs">
+                                    <i class="fa fa-pencil"></i>
+                                    Edit
+                                </a>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
