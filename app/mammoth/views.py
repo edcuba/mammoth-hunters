@@ -1,7 +1,10 @@
 from ..models import Mammoth, Message, Hunt, Hunter
 from django.shortcuts import render, redirect
 from .forms import MammothForm
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def profile(request):
     cont = {}
     tmp = request.GET.get('id_mammoth')
@@ -42,12 +45,8 @@ def profile(request):
     for message in cont['messages']:
         message.location = message.from_watch.location
 
-    try:
-        cont['us'] = Hunter.objects.get(pk=request.user.id).role
-    except:
-        cont['us'] = 2
     cont['form'] = MammothForm(instance=mammoth)
-    if cont['us'] != 2:
+    if not request.user.isManager():
         for field in cont['form'].fields.values():
             field.widget.attrs['readonly'] = True
     if request.method == 'POST':
@@ -58,6 +57,8 @@ def profile(request):
     cont['mammoth'] = mammoth
     return render(request, 'app/mammoth/profile.html', cont)
 
+
+@login_required
 def mammothList(request):
     cont = {}
 
@@ -86,6 +87,8 @@ def mammothList(request):
 
     return render(request, 'app/mammoth/list.html', cont)
 
+
+@login_required
 def create(request, returnToDash=False):
     cont = {}
     cont['form'] = MammothForm()
@@ -97,5 +100,7 @@ def create(request, returnToDash=False):
         return redirect('index')
     return render(request, 'app/mammoth/create.html', cont)
 
+
+@login_required
 def createInDash(request):
     return create(request, returnToDash=True)

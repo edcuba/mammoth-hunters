@@ -1,14 +1,20 @@
 from django.shortcuts import render, redirect
 from .forms import MessageForm
 from ..models import Watch
+from django.contrib.auth.decorators import login_required, user_passes_test
+from ..security import privileged_check
 
-
+@login_required
+@user_passes_test(privileged_check)
 def messageList(request):
     return render(request, 'app/message/list.html')
 
+@login_required
+@user_passes_test(privileged_check)
 def detail(request):
     return render(request, 'app/message/list.html')
 
+@login_required
 def create(request):
     if request.method != 'POST':
         return redirect('index')

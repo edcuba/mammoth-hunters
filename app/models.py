@@ -1,6 +1,6 @@
 from django.db.models import Model, CharField, BooleanField
 from django.db.models import IntegerField, ForeignKey, ManyToManyField
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from random import randint
 
 ROLES = (
@@ -36,7 +36,7 @@ class Mammoth(Model):
 
     def __str__(self):
         """ Mammoth identification """
-        return "{} {}".format(self.symbol, self.behavior)
+        return "{} with {}".format(self.behavior, self.symbol)
 
     class Meta():
         """Meta"""
@@ -44,7 +44,7 @@ class Mammoth(Model):
         verbose_name_plural = 'Mammoths'
 
 
-class Hunter(User):
+class Hunter(AbstractUser):
     """ Human being """
     role = IntegerField(choices=ROLES, default=0)
     age = IntegerField(default=0)
@@ -59,9 +59,6 @@ class Hunter(User):
     Speed = IntegerField(default=0)
 
     class Meta:
-        permissions = (
-            ('see_watches', 'See watches'),
-        )
         verbose_name = 'Hunter'
         verbose_name_plural = 'Hunters'
 
@@ -70,39 +67,32 @@ class Hunter(User):
         return self.username
 
     def __init__(self, *args, **kwargs):
-        super(User, self).__init__(*args, **kwargs)
+        super(AbstractUser, self).__init__(*args, **kwargs)
         self.Stamina = randint(0, 100)
         self.Strength = randint(0, 100)
         self.Agility = randint(0, 100)
         self.Intellect = randint(0, 100)
         self.Speed = randint(0, 100)
 
+    def isManager(self):
+        return self.role == 2
 
-class Abilities(Model):
-    """ Abilities """
-    ability = CharField(max_length=128)
-    def __str__(self):
-        return self.ability
+    def isOfficer(self):
+        return self.role == 1
 
+    def isPrivileged(self):
+        return self.role > 0
 
-class HunterAbilities(Model):
-    """ Hunter abilities """
-    hunter = ForeignKey(Hunter)
-    ability = ForeignKey(Abilities)
-    skill = IntegerField(default=0)
-
-    class Meta():
-        """" Meta """
-        unique_together = (("hunter", "ability")),
-
-    def __str__(self):
-        return '{}: {}'.format(self.hunter.username, self.ability.ability)
 
 class Watch(Model):
     """ Watch """
     location = ForeignKey(Location)
     hunters = ManyToManyField(Hunter)
     active = BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Watch'
+        verbose_name_plural = 'Watches'
 
     def __str__(self):
         return "[{}] {}, Active: {}".format(self.id, self.location, self.active)

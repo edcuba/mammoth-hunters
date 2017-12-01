@@ -31,9 +31,11 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Hunts</h2>
-              <a href="{% url "hunt_add"%}">
+                {% if user.isPrivileged %}
+                <a href="{% url "hunt_add"%}">
                   <button class="btn btn-primary pull-right" type="button">New hunt</button>
                 </a>
+                {% endif %}
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -46,7 +48,9 @@
                     <th>Team Members</th>
                     <th>Pit</th>
                     <th>Status</th>
+                    {% if user.isPrivileged %}
                     <th>Action</th>
+                    {% endif %}
                   </tr>
                 </thead>
                 <tbody>
@@ -87,6 +91,7 @@
                             <button type="button" class="btn btn-warning btn-xs">In progress</button>
                             {% endif %}
                         </td>
+                        {% if user.isPrivileged %}
                         <td>
                             <form action="{% url "hunt_detail"%}" method="GET">
                                 <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
@@ -96,6 +101,7 @@
                                 </a>
                             </form>
                         </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>

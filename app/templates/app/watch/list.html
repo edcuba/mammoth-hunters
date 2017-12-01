@@ -31,9 +31,11 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Watches</h2>
-              <a href="{% url "watch_detail"%}">
+                {% if user.isPrivileged %}
+                <a href="{% url "watch_detail"%}">
                   <button class="btn btn-primary pull-right" type="button">Add Watch</button>
                 </a>
+                {% endif %}
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -45,7 +47,9 @@
                     <th>Location</th>
                     <th>Team Members</th>
                     <th>Status</th>
+                    {% if user.isPrivileged %}
                     <th>Action</th>
+                    {% endif %}
                   </tr>
                 </thead>
                 <tbody>
@@ -78,6 +82,7 @@
                         <button type="button" class="btn btn-success btn-xs">Finished</button>
                         {% endif %}
                     </td>
+                    {% if user.isPrivileged %}
                     <td>
                         {%if watch.active %}
                         <form action="{% url "watch_end"%}" method="GET">
@@ -97,6 +102,7 @@
                         </form>
                         {% endif %}
                     </td>
+                    {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>

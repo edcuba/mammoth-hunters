@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect
 from ..models import Hunt
 from .forms import HuntDetails, HuntForm, HuntSubmit
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required, user_passes_test
+from ..security import privileged_check
 
 
+@login_required
 def huntList(request):
     context = {}
     hunts = Hunt.objects.all().order_by('finished')
@@ -11,6 +14,8 @@ def huntList(request):
 
     return render(request, 'app/hunt/list.html', context)
 
+@login_required
+@user_passes_test(privileged_check)
 def detail(request):
     context = {}
 
@@ -36,6 +41,8 @@ def formError(request, context, msg="Form invalid"):
     return render(request, context['action'], context)
 
 
+@login_required
+@user_passes_test(privileged_check)
 def add(request):
     context = {}
     context['action'] = reverse("hunt_add")
@@ -55,7 +62,7 @@ def add(request):
 
     return render(request, 'app/hunt/detail.html', context)
 
-
+@login_required
 def submit(request):
     if request.method != 'POST':
         return redirect('index')

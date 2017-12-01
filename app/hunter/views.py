@@ -1,8 +1,11 @@
 from django.shortcuts import render
-from ..models import Hunter, ROLES, HunterAbilities, Watch, Hunt
+from ..models import Hunter, ROLES, Watch, Hunt
 from ..forms import HunterChangeForm
 from django.db.models import Count
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def profile(request):
     cont = {}
     tmp = request.GET.get('id_hunter', request.user.id)
@@ -32,13 +35,9 @@ def profile(request):
     else:
         hunter.alive = 'Alive'
     cont['hunter'] = hunter
-    try:
-        cont['us'] = Hunter.objects.get(pk=request.user.id).role
-    except:
-        cont['us'] = 2
 
     cont['form'] = HunterChangeForm(instance=hunter)
-    if cont['us'] != 2:
+    if not hunter.isManager():
         for field in cont['form'].fields.values():
             field.widget.attrs['readonly'] = True
     if request.method == 'POST':
@@ -57,6 +56,8 @@ def profile(request):
 
     return render(request, 'app/hunter/profile.html', cont)
 
+
+@login_required
 def hunterList(request):
     cont = {}
     cont['hunters'] = Hunter.objects.all().order_by('killedIn', 'first_name')
