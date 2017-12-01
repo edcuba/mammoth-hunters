@@ -1,6 +1,7 @@
-from ..models import Hunt, Hunter
+from ..models import Hunt, Hunter, Mammoth, Watch, Pit
 from django.forms import ModelForm, CheckboxInput, CheckboxSelectMultiple, ModelMultipleChoiceField
 from django.forms import BooleanField
+from django.db.models import Q
 
 
 class HuntForm(ModelForm):
@@ -10,6 +11,17 @@ class HuntForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
+        watches = Watch.objects.filter(active=True)
+        hunts = Hunt.objects.filter(finished=False)
+        hunters = Hunter.objects.filter(~Q(watch__in=watches) &
+                                        ~Q(hunt__in=hunts) &
+                                        Q(killedIn=None))
+
+        pits = Pit.objects.filter(taken=False)
+        mammoths = Mammoth.objects.filter(~Q(hunt__in=hunts))
+        self.fields['hunters'].queryset = hunters
+        self.fields['pit'].queryset = pits
+        self.fields['target'].queryset = mammoths
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
 

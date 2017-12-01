@@ -25,8 +25,8 @@ def topHunters(context):
         hunter.killPerc = 100 * (hunter.kills / maxKills)
 
     context['maxkills'] = maxKills
-    tophunters = sorted(hunters, key=lambda x: x.kills)
-    context['hunters'] = hunters[:5]
+    tophunters = sorted(hunters, key=lambda x: x.kills, reverse=True)
+    context['hunters'] = tophunters[:5]
 
 def activeHunts(context):
     hunts = Hunt.objects.filter(finished=False)

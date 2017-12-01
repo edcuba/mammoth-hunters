@@ -154,7 +154,12 @@
                     {% for hunter in hunters %}
                     <div class="widget_summary">
                         <div class="w_left w_25">
-                            <span>{{ hunter.first_name }} {{ hunter.last_name }}</span>
+                            <form action="{% url "hunter_profile"%}" method="GET">
+                                <input type="hidden" name="id_hunter" value="{{ hunter.id }}" />
+                                <a href="#" onclick="parentNode.submit()">
+                                   <span> {{ hunter.first_name }} {{ hunter.last_name }}</span>
+                                </a>
+                            </form>
                         </div>
                         <div class="w_center w_55">
                             <div class="progress">

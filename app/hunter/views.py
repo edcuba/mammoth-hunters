@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from ..models import Hunter, ROLES, HunterAbilities, Watch, Hunt
 from ..forms import HunterChangeForm
+from django.db.models import Count
 
 def profile(request):
     cont = {}
@@ -15,7 +16,7 @@ def profile(request):
     except:
         pass
     try:
-        location = Hunt.objects.get(hunter=hunter.id, finished=False).started_by.location
+        location = Hunt.objects.get(hunters=hunter.id, finished=False).pit.location
         act = 'Hunting'
     except:
         pass
@@ -58,7 +59,7 @@ def profile(request):
 
 def hunterList(request):
     cont = {}
-    cont['hunters'] = Hunter.objects.all()
+    cont['hunters'] = Hunter.objects.all().order_by('killedIn', 'first_name')
     for hunter in cont['hunters']:
         location = False
         act = ''
@@ -68,8 +69,7 @@ def hunterList(request):
         except:
             pass
         try:
-            location = Hunt.objects.get(hunter=hunter.id, finished=False).started_by.location
-            watch = False
+            location = Hunt.objects.get(hunters=hunter.id, finished=False).pit.location
             act = 'Hunting'
         except:
             pass

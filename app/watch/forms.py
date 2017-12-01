@@ -11,7 +11,9 @@ class WatchForm(ModelForm):
         super(ModelForm, self).__init__(*args, **kwargs)
         watches = Watch.objects.filter(active=True)
         hunts = Hunt.objects.filter(finished=False)
-        hunters = Hunter.objects.filter(~Q(watch__in=watches) & ~Q(hunt__in=hunts))
+        hunters = Hunter.objects.filter(~Q(watch__in=watches) &
+                                        ~Q(hunt__in=hunts) &
+                                        Q(killedIn=None))
         self.fields['hunters'].queryset = hunters
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
