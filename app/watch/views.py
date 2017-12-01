@@ -31,3 +31,15 @@ def detail(request):
 
     context['form'] = WatchForm(instance=watch)
     return render(request, 'app/watch/detail.html', context)
+
+
+def end(request):
+
+    watchid = request.GET.get('id_watch')
+    try:
+        watch = Watch.objects.get(pk=watchid)
+        watch.active = False
+        watch.save()
+    except:
+        pass
+    return redirect('watch_list')

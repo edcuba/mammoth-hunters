@@ -2,11 +2,12 @@ from django.forms import ModelForm
 from ..models import Watch, Hunter, Hunt
 from django.db.models import Q
 
+
 class WatchForm(ModelForm):
     class Meta:
         model = Watch
-        fields = ['location', 'hunters']
-    
+        fields = ['location', 'hunters', 'active']
+
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
         watches = Watch.objects.filter(active=True)
@@ -18,3 +19,4 @@ class WatchForm(ModelForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
 
+        self.fields['active'].widget.attrs['class'] = 'flat'
