@@ -32,7 +32,7 @@ def profile(request):
         mammoth.hunted_w = 'Yes'
     else:
         mammoth.hunted_w = 'No'
-    if not mammoth.killedIn:
+    if not mammoth.killedIn and mammoth.health > 0:
         mammoth.status = 'Alive'
     else:
         mammoth.status = 'Dead'
@@ -49,6 +49,8 @@ def profile(request):
     if not request.user.isManager():
         for field in cont['form'].fields.values():
             field.widget.attrs['readonly'] = True
+    if mammoth.killedIn:
+        cont['form'].fields['health'].widget.attrs['readonly'] = True
     if request.method == 'POST':
         cont['form'] = MammothForm(request.POST, instance=mammoth)
         if cont['form'].is_valid():
@@ -63,7 +65,8 @@ def mammothList(request):
     cont = {}
 
     cont['mammoths'] = Mammoth.objects.all().order_by('killedIn', '-hunt', '-id')
-
+    cont['mammoths'] = cont['mammoths'].extra(select={'living':"health > '0'"})
+    cont['mammoths'] = cont['mammoths'].extra(order_by=['-living'])
     for mammoth in cont['mammoths']:
         try:
             tmp_loc = Message.objects.filter(mammoths=mammoth.id).latest('id')
@@ -80,7 +83,7 @@ def mammothList(request):
         except:
             mammoth.hunted_w = 'No'
 
-        if not mammoth.killedIn:
+        if not mammoth.killedIn and mammoth.health > 0:
             mammoth.status = 'Alive'
         else:
             mammoth.status = 'Dead'

@@ -29,32 +29,43 @@
                     <th>Status</th>
                     <th>Hunted</th>
                   </tr>
-                  <tr>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
-                        </span>
-                    </div>
-                  </tr>
                 </thead>
                 <tbody>
                   {%for mammoth in mammoths%}
                       <tr>
                         <td>
                           <form action="{% url "mammoth_profile"%}" method="GET">
-                            <input type="hidden" name="id_mammoth" value="{{mammoth.id}}" />
+                            <input type="hidden" name="id_mammoth" value="{{mammoth.id}}"/>
                             <a href="#" onclick="parentNode.submit()">
                               {{mammoth.symbol}}
                             </a>
                           </form>
                         </td>
                         <td>{{mammoth.location}}</td>
-                        <td>{{mammoth.status}}</td>
+                        <td>
+                          <form action="{% url "mammoth_profile"%}" method="GET">
+                              <input type="hidden" name="id_mammoth" value="{{mammoth.id}}"/>
+                          <a href="#" type="button" onclick="parentNode.submit()"
+                            {%if mammoth.status == 'Alive'%}
+                              class="btn btn-success btn-xs"
+                            {%else%}
+                              class="btn btn-danger btn-xs"
+                            {%endif%}
+                          >
+                            {{mammoth.status}}
+                          </a>
+                          </form>
+                        </td>
                         <td>
                           <form action="{% url "hunt_detail"%}" method="GET">
                               <input type="hidden" name="id_hunt" value="{{mammoth.hunt_id}}" />
-                              <a href="#" onclick="parentNode.submit()">
+                              <a href="#" onclick="parentNode.submit()"
+                                {%if mammoth.hunted_w == 'Yes'%}
+                                  class="btn btn-success btn-xs"
+                                {%else%}
+                                  class="btn btn-danger btn-xs"
+                                {%endif%}
+                              >
                                 {{mammoth.hunted_w}}
                               </a>
                           </form>

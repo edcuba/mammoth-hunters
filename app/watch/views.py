@@ -16,7 +16,6 @@ def watchList(request):
 
 
 @login_required
-@user_passes_test(privileged_check)
 def detail(request):
     context = {}
     watchID = request.GET.get('id_watch')

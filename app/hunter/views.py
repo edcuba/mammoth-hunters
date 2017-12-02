@@ -36,14 +36,14 @@ def profile(request):
         location = '{0} ({1})'.format(location, act)
     hunter.location = location
 
-    if hunter.killedIn:
+    if hunter.killedIn or hunter.health <=0:
         hunter.alive = 'Dead'
     else:
         hunter.alive = 'Alive'
     cont['hunter'] = hunter
 
     cont['form'] = HunterChangeForm(instance=hunter)
-    if not hunter.isManager():
+    if not request.user.isManager():
         for field in cont['form'].fields.values():
             field.widget.attrs['readonly'] = True
     if request.method == 'POST':
@@ -67,6 +67,8 @@ def profile(request):
 def hunterList(request):
     cont = {}
     cont['hunters'] = Hunter.objects.all().order_by('killedIn', 'first_name')
+    cont['hunters'] = cont['hunters'].extra(select={'living':"health > '0'"})
+    cont['hunters'] = cont['hunters'].extra(order_by=['-living'])
     for hunter in cont['hunters']:
         location = False
         act = ''
@@ -87,7 +89,7 @@ def hunterList(request):
         hunter.location = location
         hunter.role_name = ROLES[hunter.role][1]
         #last_hunt = Hunt.objects.filter(killedIn)
-        if hunter.killedIn:
+        if hunter.killedIn or hunter.health <= 0:
             hunter.alive = 'Dead'
         else:
             hunter.alive = 'Alive'

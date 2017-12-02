@@ -93,6 +93,7 @@ def submit(request):
     if killed:
         target = hunt.target
         target.killedIn = hunt
+        target.health = 0
         target.save()
 
     died = form.cleaned_data.get('deadHunters', [])

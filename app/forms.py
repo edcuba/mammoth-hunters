@@ -12,7 +12,7 @@ class HunterCreationForm(UserCreationForm):
 class HunterChangeForm(ModelForm):
     class Meta:
         model = Hunter
-        fields = ['username', 'first_name', 'last_name', 'role',
+        fields = ['username', 'first_name', 'last_name', 'health','role',
                   'Strength', 'Stamina', 'Agility', 'Intellect', 'Speed']
 
     def __init__(self, *args, **kwargs):

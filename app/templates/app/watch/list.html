@@ -47,44 +47,49 @@
                     <th>Location</th>
                     <th>Team Members</th>
                     <th>Status</th>
-                    {% if user.isPrivileged %}
                     <th>Action</th>
-                    {% endif %}
                   </tr>
                 </thead>
                 <tbody>
                     {% for watch in watches %}
                     <tr>
                     <td>
+                      <form action="{% url "watch_detail"%}" method="GET">
+                        <input type="hidden" name="id_watch" value="{{ watch.id }}" />
+                        <a href="#" onclick="parentNode.submit()">                            
                         {{ watch.id }}
+                        </a>
+                        </form>
                     </td>
                     <td>
                         {{ watch.location }}
                     </td>
                     <td>
                       <ul class="list-inline">
-                            {% for hunter in watch.hunters.all %}
-                            <li>
-                                <form action="{% url "hunter_profile"%}" method="GET">
-                                    <input type="hidden" name="id_hunter" value="{{ hunter.id }}" />
-                                    <a href="#" onclick="parentNode.submit()">
-                                        <img title="{{ hunter.username }}" src="{% static "images/fred.png" %}" class="avatar">
-                                    </a>
-                                </form>
-                            </li>
-                            {% endfor %}
+                        {% for hunter in watch.hunters.all %}
+                        <li>
+                            <form action="{% url "hunter_profile"%}" method="GET">
+                                <input type="hidden" name="id_hunter" value="{{ hunter.id }}" />
+                                <a href="#" onclick="parentNode.submit()">
+                                    <img title="{{ hunter.username }}" src="{% static "images/fred.png" %}" class="avatar">
+                                </a>
+                            </form>
+                        </li>
+                        {% endfor %}
                       </ul>
                     </td>
                     <td>
+                      <form action="{% url "watch_detail"%}" method="GET">
+                        <input type="hidden" name="id_watch" value="{{ watch.id }}" />
                         {% if watch.active %}
-                        <button type="button" class="btn btn-warning btn-xs">Active</button>
+                        <a href="#" class="btn btn-warning btn-xs" onclick="parentNode.submit()">Active</a>
                         {% else %}
-                        <button type="button" class="btn btn-success btn-xs">Finished</button>
+                        <a href="#" class="btn btn-success btn-xs" onclick="parentNode.submit()">Finished</a>
                         {% endif %}
+                      </form>
                     </td>
-                    {% if user.isPrivileged %}
                     <td>
-                        {%if watch.active %}
+                        {%if watch.active and user.isPrivileged %}
                         <form action="{% url "watch_end"%}" method="GET">
                             <input type="hidden" name="id_watch" value="{{ watch.id }}" />
                             <a href="#" onclick="parentNode.submit()" class="btn btn-danger btn-xs">
@@ -102,7 +107,6 @@
                         </form>
                         {% endif %}
                     </td>
-                    {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>
