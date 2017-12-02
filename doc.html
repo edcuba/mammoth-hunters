@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Projekt IIS</title>
+    <style type="text/css">
+    	table { border-collapse: collapse; }
+    	td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+    	dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+</head>
+<body>
+
+<!-- Zkontrolujte prosím nastavení kódování v hlavičce dokumentu podle použitého editoru -->
+
+<h1>Lovci mamutov</h1>
+
+<dl>
+	<dt>Autoři</dt>
+	<dd>Eduard Čuba
+	    <a href="mailto:xcubae00@stud.fit.vutbr.cz">xcubae00@stud.fit.vutbr.cz</a> -
+		full stack
+	</dd>
+    <dd>Ondrej Kurák
+        <a href="mailto:xkurak00@stud.fit.vutbr.cz">xkurak00@stud.fit.vutbr.cz</a> -
+		full stack
+	</dd>
+	<dt>URL aplikace</dt>
+	<dd><a href="http://www.stud.fit.vutbr.cz/~xautor01/IIS">http://www.stud.fit.vutbr.cz/~xautor01/IIS</a></dd>
+</dl>
+
+<h2>Uživatelé systému pro testování</h2>
+<table>
+<tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+<tr><td>admin</td><td>1234567a</td><td>Administrátor stránky</td></tr>
+<tr><td>xcubae00</td><td>1234567a</td><td>Manager</td></tr>
+<tr><td>xkurak00</td><td>1234567a</td><td>Officer</td></tr>
+<tr><td>jozef</td><td>1234567a</td><td>Hunter</td></tr>
+</table>
+
+<h2>Právomoci užívateľov</h2>
+
+<h4>Všetci</h4>
+<ul>
+    <li>Prezerať si profily lovcov a mamutov</li>
+    <li>Prezerať si históriu lovov, správ a hliadok</li>
+    <li>Prezerať si lovecké jamy</li>
+</ul>
+
+<h4>Hunter</h4>
+<ul>
+    <li>Zúčastniť sa lovov a hliadok</li>
+    <li>Ak je na love: podať správu lovu</li>
+    <li>Ak je na hliadke: pridať mamuta, poslať správu o spozorovaných mamotoch</li>
+</ul>
+
+<h4>Officer</h4>
+<ul>
+    <li>Upraviť históriu lovov, správ a hliadok</li>
+    <li>Upraviť profily lovcov</li>
+    <li>Upraviť alebo vytvoriť profily mamutov</li>
+    <li>Zmeniť rolu užívateľa</li>
+    <li>Pridať lovecké jamy</li>
+</ul>
+
+<h4>Manager</h4>
+<ul>
+    <li>Určit loveckú skupiniu (spustiť lov)</li>
+    <li>Určit a ukončiť hliadku</li>
+</ul>
+
+
+<h4>Administrátor</h4>
+<ul>
+    <li>Všetky právomoci (pomocou rozhrania pre administrátora)</li>
+</ul>
+
+<h2>Implementace</h2>
+<p>Stručná dokumentace k implementaci, která popisuje, které PHP skripty implementují jednotlivé případy použití uvedené v use-case diagramu z IDS. V případě, že bylo nutno při implementaci učinit změny v návrhu, musí být v dokumentaci zdůvodněny.</p>
+
+<h2>Instalace</h2>
+<ul>
+<li>Stručně popište postup instalace na server</li>
+<li>Softwarové požadavky (verze PHP apod.)</li>
+<li>Jak rozbalit, konfigurovat, inicializovat databází, ...</li>
+</ul>
+
+<h2>Známé problémy</h2>
+<p>Zde popište, které body zadání (IDS a IIS) nejsou implementovány a z jakého důvodu. Např. &bdquo;Z časových důvodů nebyla implementována správa uživatelů.&rdquo; Pomůžete tím zrychlit opravování, když neimplementované funkce nebudeme muset dlouze hledat.</p>
+
+</body>
+</html>
