@@ -17,6 +17,7 @@ from .logic import topHunters, activeHunts
 from .mammoth.forms import MammothForm
 from .message.forms import MessageForm
 from .hunt.forms import HuntSubmit
+from django.contrib import messages
 
 
 @login_required
@@ -76,18 +77,12 @@ def register(request):
             hunter.save()
 
             # now you can log in
-            return redirect('/')
+            messages.success(request, "Registration successful")
+            return redirect('login')
         else:
-            context['error'] = 'Invalid username or password'
+            messages.error(request, "Registration failed")
 
     return render(request, 'registration/register.html', context)
-
-
-def setManagerPermissions(user):
-    pass
-
-def setOfficerPermissions(user):
-    pass
 
 
 @sensitive_post_parameters()
@@ -113,13 +108,6 @@ def login(request):
             user = form.get_user()
             # Okay, security check complete. Log the user in.
             auth_login(request, user)
-
-            hunter = Hunter.objects.get(pk=user.id)
-
-            if hunter.role == 'Officer':
-                setOfficerPermissions(user)
-            elif hunter.role == 'Manager':
-                setManagerPermissions(user)
 
             return redirect(redirect_to)
     else:

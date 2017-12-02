@@ -5,50 +5,48 @@
 
 {% block stylesheets %}
   {{ block.super }}
-  <!-- Animate.css -->
-  <link href="{% static "vendors/animate.css/animate.min.css" %}" rel="stylesheet">
+  <link href="{% static "css/login.css" %}" rel="stylesheet">
 {% endblock stylesheets %}
 
 {% block body_class %}login{% endblock body_class %}
 
 {% block body %}
-  <div>
-    <div class="login_wrapper">
-      <div class="animate form login_form">
-        <section class="login_content">
-          <form action="{% url 'login' %}" method="POST">
-            <h1>Login Form</h1>
+
+<script src="{% static "vendors/jquery/dist/jquery.min.js" %}"></script>
+<script src="{% static "vendors/pnotify/dist/pnotify.js" %}"></script>
+<script src="{% static "vendors/pnotify/dist/pnotify.buttons.js" %}"></script>
+<script src="{% static "vendors/pnotify/dist/pnotify.nonblock.js" %}"></script>
+
+<div class="container">
+    <div class="card card-container">
+        <img id="profile-img" class="profile-img-card" src="{% static "images/fred.png" %}" />
+        <p id="profile-name" class="profile-name-card"></p>
+        <form class="form-signin" action="{% url 'login' %}" method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input class="btn btn-default submit" type="submit" value="Login"></input>
-            <input type="hidden" name="next" value="{{ next }}" />
-            <div class="clearfix"></div>
+            <input name="username" type="text" required id="id_username" class="form-control" placeholder="Username" required autofocus>
+            <input name="password" type="password" required id="id_password" class="form-control" placeholder="Password" required>
+            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+        </form><!-- /form -->
+        <a href="/register" href="#" class="forgot-password">
+            Create an account
+        </a>
 
-            {% if form.errors %}
-                <p>Your username and password didn't match. Please try again.</p>
-            {% endif %}
-
-            {% if next %}
-                {% if user.is_authenticated %}
-                <p>Your account doesn't have access to this page. To proceed,
-                please login with an account that has access.</p>
-                {% else %}
-                <p>Please login to see this page.</p>
-                {% endif %}
-            {% endif %}
-          </form>
-          <div class="separator">
-            <p class="change_link">New to site?
-              <a href="/register" class="to_register"> Create Account </a>
-            </p>
-            <div class="clearfix"></div>
-            <br />
-            <div>
-              <p>©2017 All Rights Reserved. Mammoth hunters</p>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+        {% if next %}
+        <script type="text/javascript">
+            $(function(){
+                new PNotify({
+                    {% if user.is_authenticated %}
+                    text: "Your account doesn't have access to this page. To proceed, please login with an account that has access.",
+                    {% else %}
+                    text: "Please login to see this page.",
+                    {% endif %}
+                    type: 'warning',
+                    title: 'Log in requested',
+                    styling: 'bootstrap3'
+                });
+            });
+        </script>
+        {% endif %}
+    </div><!-- /card-container -->
+</div><!-- /container -->
 {% endblock body %}
