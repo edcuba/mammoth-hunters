@@ -102,8 +102,8 @@ class Message(Model):
     """ Message """
     from_watch = ForeignKey(Watch)
     mammoths = ManyToManyField(Mammoth)
-    text = TextField(default=' ')
-    title = CharField(max_length=128, default=' ')
+    text = TextField(default='', blank=True)
+    title = CharField(max_length=128, default='', blank=True)
 
 
 class Hunt(Model):

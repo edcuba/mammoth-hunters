@@ -14,7 +14,7 @@ class HunterChangeForm(ModelForm):
         model = Hunter
         fields = ['username', 'first_name', 'last_name', 'role',
                   'Strength', 'Stamina', 'Agility', 'Intellect', 'Speed']
-    
+
     def __init__(self, *args, **kwargs):
         super(HunterChangeForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['readonly'] = True

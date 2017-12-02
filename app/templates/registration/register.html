@@ -5,43 +5,93 @@
 
 {% block stylesheets %}
   {{ block.super }}
-  <!-- Animate.css -->
-  <link href="{% static "vendors/animate.css/animate.min.css" %}" rel="stylesheet">
+  <link href="{% static "css/login.css" %}" rel="stylesheet">
 {% endblock stylesheets %}
 
 {% block body_class %}login{% endblock body_class %}
 
 {% block body %}
-  <div>
-    <div class="login_wrapper">
-        <div class="animate form login_form">
-          <section class="login_content">
-            <form action="" method="POST">
-              <h1>Create Account</h1>
-              {% for field in form %}
-                <div class="fieldWrapper">
-                    {{ field.errors }}
-                    {{ field.label_tag }} {{ field }}
-                    {% if field.help_text %}
-                    <p class="help">{{ field.help_text|safe }}</p>
-                    {% endif %}
-                </div>
-              {% endfor %}
-              {% csrf_token %}
-              <input type="submit"></input>
 
-              <div class="clearfix"></div>
-              {{ error }}
-              <div class="separator">
-                <p class="change_link">Already a member ?
-                  <a href="{% url "login" %}" class="to_register"> Log in </a>
-                </p>
-                <div class="clearfix"></div>
-                <br />
-              </div>
-            </form>
-          </section>
-        </div>
-    </div>
-  </div>
+<script src="{% static "vendors/jquery/dist/jquery.min.js" %}"></script>
+<script src="{% static "vendors/pnotify/dist/pnotify.js" %}"></script>
+<script src="{% static "vendors/pnotify/dist/pnotify.buttons.js" %}"></script>
+<script src="{% static "vendors/pnotify/dist/pnotify.nonblock.js" %}"></script>
+
+<div class="container">
+    <div class="card card-container">
+        <img id="profile-img" class="profile-img-card" src="{% static "images/fred.png" %}" />
+        <p id="profile-name" class="profile-name-card"></p>
+        <form class="form-signin" method="POST">
+            {% csrf_token %}
+            Account
+            <input name="username"
+                title="Max. 150 characters. Letters, digits and @/./+/-/_ only."
+                maxlength="150"
+                type="text"
+                required
+                id="id_username"
+                class="form-control"
+                placeholder="Username"
+                autofocus
+            >
+            <input name="password1"
+                title="Your password must contain at least 8 characters"
+                type="password"
+                required
+                id="id_password1"
+                class="form-control"
+                placeholder="Password"
+            >
+            <label hidden="true" id="tooshort">Password is too short</label>
+            <input name="password2"
+                title="Your passwords must match"
+                type="password"
+                required
+                id="id_password2"
+                class="form-control"
+                placeholder="Password confirmation"
+            >
+            <label hidden="true" id="passwdmatch">Passwords don't match</label>
+            <br />
+            Personal
+            <input name="first_name"
+                type="text"
+                required
+                id="id_first_name"
+                class="form-control"
+                placeholder="First name"
+                maxlength="30"
+            >
+            <input name="last_name"
+                type="text"
+                required
+                id="id_last_name"
+                class="form-control"
+                placeholder="Last name"
+                maxlength="30"
+            >
+            <button id="regbtn" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Register</button>
+        </form><!-- /form -->
+    </div><!-- /card-container -->
+    <script>
+        $('#id_password1').on('input', function() {
+            if($(this).val().length < 8) {
+                $('#regbtn').hide();
+                $('#tooshort').show();
+            } else {
+                $('#regbtn').show();
+                $('#tooshort').hide();
+            }
+        });
+        $('#id_password2').on('input', function() {
+            if($(this).val() != $('#id_password1').val()) {
+                $('#regbtn').hide();
+                $('#passwdmatch').show();
+            } else {
+                $('#regbtn').show();
+                $('#passwdmatch').hide();
+            }
+        });
+    </script>
+</div><!-- /container -->
 {% endblock body %}

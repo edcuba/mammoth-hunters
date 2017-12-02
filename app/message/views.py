@@ -36,14 +36,16 @@ def create(request):
 
     activeWatch = None
     watch = Watch.objects.filter(hunters=request.user.id, active=True).first()
+
     # find out if hunter is active watch
     if watch:
         activeWatch = watch
-
-    if not activeWatch:
+    else:
         return redirect('index')
 
     message.from_watch = activeWatch
+    message.save()
+    message.mammoths = form.cleaned_data['mammoths']
     message.save()
 
     return redirect('index')

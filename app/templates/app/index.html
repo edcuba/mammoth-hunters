@@ -37,7 +37,7 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <h4>Message title:</h4>
                             {{messageform.title}}
-                            <h4>Spoted mammoths:</h4>  
+                            <h4>Spoted mammoths:</h4>
                             <ul class="to_do">
                                 {% for checkbox in messageform.mammoths %}
                                 <li>
@@ -46,7 +46,7 @@
                                 {% endfor %}
                             </ul>
                             {% csrf_token %}
-                            <h4>Report:</h4>                            
+                            <h4>Report:</h4>
                             {{messageform.text}}
                         <br>
                         </div>
