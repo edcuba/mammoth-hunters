@@ -28,7 +28,7 @@ class HuntForm(ModelForm):
 
 class HuntDetails(ModelForm):
 
-    deadHunters = ModelMultipleChoiceField(queryset=Hunter.objects.all(), required=False)
+    deadHunters = ModelMultipleChoiceField(queryset=None, required=False)
     mammothKilled = BooleanField(initial=True, required=False)
 
     class Meta:
@@ -39,6 +39,7 @@ class HuntDetails(ModelForm):
         super(ModelForm, self).__init__(*args, **kwargs)
         self.fields['deadHunters'].label = 'Hunters died'
         self.fields['deadHunters'].queryset = self.instance.hunters.all()
+        self.fields['deadHunters'].initial = self.instance.hunters.exclude(killedIn=None)
 
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
