@@ -1,13 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from ..models import Hunter, ROLES, Watch, Hunt
 from ..forms import HunterChangeForm
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
+from .forms import PasswdForm
 
 
 @login_required
 def profile(request):
     cont = {}
+
+    cont['passwordform'] = PasswdForm(request.user)
+
     tmp = request.GET.get('id_hunter', request.user.id)
     hunter = Hunter.objects.get(pk=tmp)
     hunter.role_name = ROLES[hunter.role][1]
@@ -92,3 +98,15 @@ def hunterList(request):
                               hunter.Speed)/100, 1)
     cont['stars'] = list(range(1, 6))
     return render(request, 'app/hunter/list.html', cont)
+
+
+@login_required
+def changePass(request):
+    form = PasswdForm(request.user, request.POST)
+    if form.is_valid():
+        user = form.save()
+        update_session_auth_hash(request, user)
+        messages.success(request, 'Password successfully updated')
+    else:
+        messages.error(request, 'Password update failed!')
+    return redirect('hunter_profile')
