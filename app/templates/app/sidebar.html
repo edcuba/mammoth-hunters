@@ -62,14 +62,12 @@
                 Watches
             </a>
         </li>
-        {% if user.isPrivileged %}
         <li>
             <a href="{% url "message_list" %}">
                 <i class="fa fa-comment"></i>
                 Messages
             </a>
         </li>
-        {% endif %}
         <li>
             <a href="{% url "pit_list" %}">
                 <i class="fa fa-map-marker"></i>

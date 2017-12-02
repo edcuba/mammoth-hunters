@@ -3,9 +3,11 @@ from .forms import MessageForm
 from ..models import Watch, Hunter, Message, Mammoth
 from django.contrib.auth.decorators import login_required, user_passes_test
 from ..security import privileged_check
+from django.contrib import messages
+
+
 
 @login_required
-@user_passes_test(privileged_check)
 def messageList(request):
     cont = {}
     hunter = Hunter.objects.get(pk=request.user.id)
@@ -36,6 +38,7 @@ def create(request):
 
     form = MessageForm(request.POST)
     if not form.is_valid():
+        messages.error(request, "Invalid message form")
         return redirect('index')
 
     message = form.save(commit=False)
@@ -47,6 +50,7 @@ def create(request):
     if watch:
         activeWatch = watch
     else:
+        messages.error(request, "Watch isn't active")
         return redirect('index')
 
     message.from_watch = activeWatch
@@ -54,4 +58,5 @@ def create(request):
     message.mammoths = form.cleaned_data['mammoths']
     message.save()
 
+    messages.success(request, "Message created")
     return redirect('index')

@@ -15,6 +15,7 @@ class HuntForm(ModelForm):
         hunts = Hunt.objects.filter(finished=False)
         hunters = Hunter.objects.filter(~Q(watch__in=watches) &
                                         ~Q(hunt__in=hunts) &
+                                        Q(role=0) &
                                         Q(killedIn=None))
 
         pits = Pit.objects.filter(taken=False)

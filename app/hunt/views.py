@@ -3,7 +3,8 @@ from ..models import Hunt
 from .forms import HuntDetails, HuntForm, HuntSubmit
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
-from ..security import privileged_check
+from ..security import manager_check, privileged_check
+from django.contrib import messages
 
 
 @login_required
@@ -37,7 +38,9 @@ def detail(request):
             for hunter in died:
                 hunter.killedIn = hunt
                 hunter.save()
+            messages.success(request, "Hunt updated")
             return redirect('hunt_list')
+        messages.error(request, "Hunt update failed")
     else:
         huntID = request.GET.get('id_hunt')
         request.session['id_hunt'] = huntID
@@ -51,13 +54,8 @@ def detail(request):
 
     return render(request, 'app/hunt/detail.html', context)
 
-def formError(request, context, msg="Form invalid"):
-    context['error'] = "Error: " + msg
-    return render(request, context['action'], context)
-
-
 @login_required
-@user_passes_test(privileged_check)
+@user_passes_test(manager_check)
 def add(request):
     context = {}
     context['action'] = reverse("hunt_add")
@@ -69,28 +67,31 @@ def add(request):
 
         if form.is_valid():
             hunt = form.save()
+            messages.success(request, "Hunt created")
             return redirect("hunt_list")
 
-        return formError(request, context)
+        messages.error(request, "Hunt creation failed")
+        return render(request, context['action'], context)
 
     context['form'] = HuntForm()
 
     return render(request, 'app/hunt/detail.html', context)
+
 
 @login_required
 def submit(request):
     if request.method != 'POST':
         return redirect('index')
 
-    hunts = Hunt.objects.filter(hunters=request.user.id)
-    form = None
-    # find out if hunter is in unfinished hunt
-    for hunt in hunts:
-        if not hunt.finished:
-            form = HuntSubmit(request.POST, instance=hunt)
-            break
+    hunt = Hunt.objects.filter(hunters=request.user.id, finished=False).first()
+    if not hunt:
+        messages.error(request, "No active hunt")
+        return redirect('index')
+
+    form = HuntSubmit(request.POST, instance=hunt)
 
     if not form or not form.is_valid():
+        messages.error(request, "Hunt form invalid")
         return redirect('index')
 
     hunt = form.save()
@@ -110,4 +111,5 @@ def submit(request):
     hunt.finished = True
     hunt.save()
 
+    messages.success(request, "Hunt report submitted")
     return redirect('index')

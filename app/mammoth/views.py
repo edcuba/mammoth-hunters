@@ -2,6 +2,8 @@ from ..models import Mammoth, Message, Hunt, Hunter
 from django.shortcuts import render, redirect
 from .forms import MammothForm
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
 
 
 @login_required
@@ -41,12 +43,12 @@ def profile(request):
     for hunt in cont['hunts']:
         hunt.location = hunt.pit.location
 
-    cont['messages'] = Message.objects.filter(mammoths=mammoth.id)
-    for message in cont['messages']:
+    cont['last_messages'] = Message.objects.filter(mammoths=mammoth.id)
+    for message in cont['last_messages']:
         message.location = message.from_watch.location
 
     cont['form'] = MammothForm(instance=mammoth)
-    if not request.user.isManager():
+    if not request.user.isOfficer():
         for field in cont['form'].fields.values():
             field.widget.attrs['readonly'] = True
     if mammoth.killedIn:
@@ -55,6 +57,10 @@ def profile(request):
         cont['form'] = MammothForm(request.POST, instance=mammoth)
         if cont['form'].is_valid():
             mammoth = cont['form'].save()
+            messages.success(request, "Mammoth updated")
+        else:
+            messages.error(request, "Mammoth update failed")
+
 
     cont['mammoth'] = mammoth
     return render(request, 'app/mammoth/profile.html', cont)
@@ -99,6 +105,10 @@ def create(request, returnToDash=False):
         cont['form'] = MammothForm(request.POST)
         if cont['form'].is_valid():
             cont['form'].save()
+            messages.success(request, "Mammoth created")
+        else:
+            messages.error(request, "Mammoth creation failed")
+
     if returnToDash:
         return redirect('index')
     return render(request, 'app/mammoth/create.html', cont)

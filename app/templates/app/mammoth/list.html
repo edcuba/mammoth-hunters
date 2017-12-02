@@ -13,7 +13,7 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Mammoths</h2>
-              {% if user.isPrivileged %}
+              {% if user.isOfficer %}
               <a href="{% url "mammoth_create"%}">
                 <button class="btn btn-primary pull-right" type="button">Add mammoth</button>
               </a>
