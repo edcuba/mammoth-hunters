@@ -21,7 +21,15 @@ def messageList(request):
 @login_required
 @user_passes_test(privileged_check)
 def detail(request):
-    return render(request, 'app/message/list.html')
+    cont = {}
+    message_id = request.GET.get('id_message')
+    message = Message.objects.get(pk=message_id)
+    mammoths = Mammoth.objects.filter(message__in=message_id)
+    message.watch_id = message.from_watch.id
+    cont['message'] = message
+    cont['mammoths'] = mammoths
+    print("detail")
+    return render(request, 'app/message/create.html', cont)
 
 @login_required
 def create(request):

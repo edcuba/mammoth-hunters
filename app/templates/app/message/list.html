@@ -31,16 +31,37 @@
                   <li>
                     <div class="block">
                       <div class="tags">
-                        <a href="" class="tag">
-                          <span>{{message.id}}</span>
-                        </a>
+                          <a class="tag">
+                            <span>{{message.id}}</span>
+                          </a>
                       </div>
                       <div class="block_content">
                         <h2 class="title">
                             {{message.title}}
                         </h2>
                         <div class="byline">
-                          <span>From watch: </span> <a href="">{{message.from_watch}}</a>
+                          <form action="{% url "watch_detail"%}" method="GET">
+                            <span>From watch: </span>
+                            <input type="hidden" name="id_watch" value="{{message.from_watch.id}}" />
+                            <a href="#" onclick="parentNode.submit()">
+                              {{message.from_watch}}
+                            </a>
+                          </form>
+                        </div>
+                        <div class="byline">
+                          <ul class= list-inline>
+                            <li><form><span>Mammoths: </span></form></li>
+                            {%for mammoth in message.mammoths.all%}
+                              <li>
+                                <form action="{% url "mammoth_profile"%}" method="GET">
+                                    <input type="hidden" name="id_mammoth" value="{{mammoth.id}}" />
+                                    <a href="#" onclick="parentNode.submit()">
+                                      {{mammoth.symbol}}
+                                    </a>
+                                </form>
+                              </li>
+                            {%endfor%}
+                          </ul>
                         </div>
                         <p class="excerpt"> {{message.text}}
                         </p>

@@ -1,7 +1,7 @@
 {% extends "app/base_site.html" %}
 {% load static %}
 
-{% block title %} Create message {% endblock title %}
+{% block title %} Message detail {% endblock title %}
 
 {% block stylesheets %}
   {{ block.super }}
@@ -11,32 +11,37 @@
 <div class="right_col" role="main">
         <div class="x_panel">
                 <div class="x_title">
-                  <h2>Create message</small></h2>
+                  <h2>Message detail</small></h2>
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                   <br />
-                  <form class="form-horizontal form-label-left" action="" method="POST">
-                      {% for field in form %}
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">{{field.label_tag}}</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          {{field}}
-                        </div>
-                      </div>
-                      {%endfor%}
-                    </div>
-                    <div class="ln_solid"></div>
-                    <div class="form-group">
-                      <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                          {% csrf_token %}
-                        <button type="button" class="btn btn-primary">Cancel</button>
-                        <button type="reset" class="btn btn-primary">Reset</button>
-                        <button type="submit" class="btn btn-success">Submit</button>
-                      </div>
-                    </div>
-
-                  </form>
+                    
+                  <h3>Title:</h3> <span>{{message.title}}</span>
+                  
+                  <h3>From watch:</h3>
+                      <form action="{% url "watch_detail"%}" method="GET">
+                          <input type="hidden" name="id_watch" value="{{message.watch_id}}" />
+                          <a href="#" onclick="parentNode.submit()">
+                            {{message.from_watch}}
+                          </a>
+                        </form>
+                  
+                  <h3>Mammoths:</h3>
+                  {%for mammoth in mammoths%}
+                  <ul>
+                    <li>
+                      <form action="{% url "mammoth_profile"%}" method="GET">
+                        <input type="hidden" name="id_mammoth" value="{{mammoth.id}}" />
+                        <a href="#" onclick="parentNode.submit()">
+                          {{mammoth.symbol}}
+                        </a>
+                      </form>
+                    </li>
+                  </ul>                    
+                  {%endfor%}
+                  <h3>Text:</h3>
+                  {{message.text}}
                 </div>
               </div>
 </div>
