@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from ..models import Watch
+from ..models import Watch, Message
 from .forms import WatchForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from ..security import privileged_check
@@ -20,7 +20,9 @@ def detail(request):
     context = {}
     watchID = request.GET.get('id_watch')
     watch = Watch.objects.get(pk=watchID)
+    messages = Message.objects.filter(from_watch=watch.id)
     context['watch'] = watch
+    context['messages_all'] = messages
     return render(request, 'app/watch/detail.html', context)
 
 @login_required

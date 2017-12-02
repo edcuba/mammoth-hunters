@@ -11,8 +11,6 @@
 
 {% block content %}
   <div class="right_col" role="main">
-
-
       <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
@@ -27,17 +25,20 @@
               </div>
               <div class="x_content">
                 <ul class="list-unstyled timeline">
-                  {%for message in messages%}
+                  {%for message in messages_all%}
                   <li>
                     <div class="block">
                       <div class="tags">
-                          <a class="tag">
-                            <span>{{message.id}}</span>
+                        <form action="{% url "message_detail"%}" method="GET">
+                          <input type="hidden" name="id_message" value="{{message.id}}" />
+                          <a href="#" class="tag" onclick="parentNode.submit()">
+                            <span>Detail</span>
                           </a>
+                        </form>
                       </div>
                       <div class="block_content">
                         <h2 class="title">
-                            {{message.title}}
+                            {{message}}
                         </h2>
                         <div class="byline">
                           <form action="{% url "watch_detail"%}" method="GET">

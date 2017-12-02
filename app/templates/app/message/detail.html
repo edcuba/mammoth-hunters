@@ -1,0 +1,85 @@
+{% extends "app/base_site.html" %}
+{% load static %}
+
+{% block title %} Message detail {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="right_col" role="main">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Message detail</small></h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <br />
+      <div class="row">
+        <div class="col-md-2 col-sm-2 col-xs-12">
+          <h4><b>Message ID:</b></h4>
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-12">
+          <h4>{{message.id}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-sm-2 col-xs-12">
+          <h4><b>Title:</b></h4>
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-12">
+          <h4>{{message.title}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-sm-2 col-xs-12">
+          <h4><b>From watch:</b></h4>
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-12">
+          <form action="{% url "watch_detail"%}" method="GET">
+            <input type="hidden" name="id_watch" value="{{message.watch_id}}" />
+            <a href="#" onclick="parentNode.submit()">
+              <h4>{{message.from_watch}}<h4>
+            </a>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-sm-2 col-xs-12">
+          <h4><b>Mammoths:</b></h4>
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-12">
+          <ul class="list-inline">
+            {%for mammoth in mammoths%}
+            <li>
+              <form action="{% url "mammoth_profile"%}" method="GET">
+                <input type="hidden" name="id_mammoth" value="{{mammoth.id}}" />
+                <a href="#" onclick="parentNode.submit()">
+                  <h4>{{mammoth.symbol}}</h4>
+                </a>
+              </form>
+            </li>
+            {%endfor%}
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-sm-2 col-xs-12">
+          <h4><b>Text:</b></h4>
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-12">
+          <h4>{{message.text}}<h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- morris.js -->
+  <script src="{% static "vendors/raphael/raphael.min.js" %}"></script>
+  <script src="{% static "vendors/morris.js/morris.min.js" %}"></script>
+{% endblock javascripts %}
