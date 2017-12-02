@@ -1,0 +1,65 @@
+{% extends "app/base_site.html" %}
+{% load static %}
+
+{% block title %} Pit detail {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="right_col" role="main">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Pit detail</small></h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <br />
+      <div class="row">
+        <div class="col-md-2 col-sm-2 col-xs-12">
+          <h4><b>Pit ID:</b></h4>
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-12">
+          <h4>{{pit.id}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-sm-2 col-xs-12">
+          <h4><b>Location:</b></h4>
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-12">
+            <h4>{{pit.location}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-sm-2 col-xs-12">
+          <h4><b>Status:</b></h4>
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-12">
+          {%if pit.taken%}
+          <h4>Taken</h4>
+          {%else%}
+          <h4>Available</h4>
+          {%endif%}          
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-sm-2 col-xs-12">
+          <h4><b>Actual hunt:</b></h4>
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-12">
+            <h4>{{pit.hunt}}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- morris.js -->
+  <script src="{% static "vendors/raphael/raphael.min.js" %}"></script>
+  <script src="{% static "vendors/morris.js/morris.min.js" %}"></script>
+{% endblock javascripts %}

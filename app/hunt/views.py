@@ -11,6 +11,12 @@ def huntList(request):
     context = {}
     hunts = Hunt.objects.all().order_by('finished', '-id')
     context['hunts'] = hunts
+    for hunt in context['hunts']:
+        try:
+            if hunt.target.killedIn.id == hunt.id:
+                hunt.successful = 'Yes'
+        except:
+            hunt.successful = 'No'
 
     return render(request, 'app/hunt/list.html', context)
 

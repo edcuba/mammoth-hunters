@@ -48,6 +48,7 @@
                     <th>Team Members</th>
                     <th>Pit</th>
                     <th>Status</th>
+                    <th>Successful</th>
                     {% if user.isPrivileged %}
                     <th>Action</th>
                     {% endif %}
@@ -90,6 +91,13 @@
                             {% else %}
                             <button type="button" class="btn btn-warning btn-xs">In progress</button>
                             {% endif %}
+                        </td>
+                        <td>
+                          {%if hunt.successful == "Yes"%}
+                          <button type="button" class="btn btn-success btn-xs">Yes</button>
+                          {%else%}
+                          <button type="button" class="btn btn-danger btn-xs">No</button>
+                          {%endif%}
                         </td>
                         {% if user.isPrivileged %}
                         <td>

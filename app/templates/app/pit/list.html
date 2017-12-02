@@ -25,56 +25,9 @@
       </div>
 
       <div class="clearfix"></div>
-
       <div class="row">
           {% if user.isPrivileged %}
-        <div class="col-md-6 col-sm-6 col-xs-12 ">
-            {% else %}
-            <div class="col-md-12 col-sm-12 col-xs-12 ">
-            {% endif %}
-          <div class="x_panel">
-            <div class="x_title">
-              <h2>Pits</h2>
-              <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-              <!-- start project list -->
-              <table class="table table-striped projects">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Location</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    {% for pit in pits %}
-                    <tr>
-                        <td>
-                            {{ pit.id }}
-                        </td>
-                        <td>
-                            {{ pit.location }}
-                        </td>
-                        <td>
-                            {% if pit.taken %}
-                            <button type="button" class="btn btn-warning btn-xs">Taken</button>
-                            {% else %}
-                            <button type="button" class="btn btn-success btn-xs">Available</button>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-              </table>
-              <!-- end project list -->
-
-            </div>
-          </div>
-        </div>
-
-        {% if user.isPrivileged %}
-        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="col-md-4 col-sm-4 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Add pit</h2>
@@ -101,6 +54,68 @@
                 </div>
             </div>
             {% endif %}
+          {% if user.isPrivileged %}
+        <div class="col-md-8 col-sm-8 col-xs-12 ">
+            {% else %}
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+            {% endif %}
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Pits</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <!-- start project list -->
+              <table class="table table-striped projects">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for pit in pits %}
+                    <tr>
+                        <td>
+                          <form action="{% url "pit_detail"%}" method="GET">
+                            <input type="hidden" name="id_pit" value="{{pit.id}}" />
+                            <a href="#" onclick="parentNode.submit()">
+                                {{pit.id}}
+                            </a>
+                          </form>
+                        </td>
+                        <td>
+                            {{ pit.location }}
+                        </td>
+                        <td>
+                            {% if pit.taken %}
+                            <button type="button" class="btn btn-warning btn-xs">Taken</button>
+                            {% else %}
+                            <button type="button" class="btn btn-success btn-xs">Available</button>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {%if user.isPrivileged%}
+                              {% if pit.taken %}
+                              <button type="button" class="btn btn-succes btn-xs">
+                                  <i class="fa fa-unlock" aria-hidden="true"></i>
+                                  Unlock</button>
+                              {% else %}
+                              <button type="button" class="btn btn-danger btn-xs">
+                                  <i class="fa fa-lock" aria-hidden="true"></i>
+                                  Lock</button>
+                              {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
         </div>
       </div>
     </div>
