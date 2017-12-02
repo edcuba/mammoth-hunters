@@ -32,7 +32,7 @@
             <div class="x_title">
               <h2>Watches</h2>
                 {% if user.isPrivileged %}
-                <a href="{% url "watch_detail"%}">
+                <a href="{% url "watch_create"%}">
                   <button class="btn btn-primary pull-right" type="button">Add Watch</button>
                 </a>
                 {% endif %}
@@ -96,7 +96,7 @@
                         <form action="{% url "watch_detail"%}" method="GET">
                             <input type="hidden" name="id_watch" value="{{ watch.id }}" />
                             <a href="#" onclick="parentNode.submit()" class="btn btn-primary btn-xs">
-                                <i class="fa fa-pencil"></i>
+                                <i class="fa fa-eye"></i>
                                 View
                             </a>
                         </form>

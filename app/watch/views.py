@@ -19,25 +19,24 @@ def watchList(request):
 @user_passes_test(privileged_check)
 def detail(request):
     context = {}
+    watchID = request.GET.get('id_watch')
+    watch = Watch.objects.get(pk=watchID)
+    context['watch'] = watch
+    return render(request, 'app/watch/detail.html', context)
 
+@login_required
+@user_passes_test(privileged_check)
+def create(request):
+    context = {}
     if request.method == 'POST':
         form = WatchForm(request.POST)
 
         if form.is_valid():
             form.save()
             return redirect('watch_list')
-
-    watchID = request.GET.get('id_watch')
-
-    try:
-        watch = Watch.objects.get(pk=watchID)
-    except:
-        watch = Watch()
-
-
-    context['form'] = WatchForm(instance=watch)
-    return render(request, 'app/watch/detail.html', context)
-
+    context['form'] = WatchForm()
+    return render(request, 'app/watch/create.html', context)
+        
 
 @login_required
 @user_passes_test(privileged_check)
