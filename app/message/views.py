@@ -33,12 +33,10 @@ def create(request):
     message = form.save(commit=False)
 
     activeWatch = None
-    watches = Watch.objects.filter(hunters=request.user.id)
+    watch = Watch.objects.filter(hunters=request.user.id, active=True).first()
     # find out if hunter is active watch
-    for watch in watches:
-        if watch.active:
-            activeWatch = watch
-            break
+    if watch:
+        activeWatch = watch
 
     if not activeWatch:
         return redirect('index')

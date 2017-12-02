@@ -29,25 +29,19 @@ def index(request):
     topHunters(context)
     activeHunts(context)
 
-    watches = Watch.objects.filter(hunters=request.user.id)
-    # find out if hunter is active watch
-    for watch in watches:
-        if watch.active:
-            context['onwatch'] = True
-            context['mammothform'] = MammothForm()
-            context['messageform'] = MessageForm()
-            break
+    watch = Watch.objects.filter(hunters=request.user.id, active=True).first()
+
+    if watch:
+        context['onwatch'] = True
+        context['mammothform'] = MammothForm()
+        context['messageform'] = MessageForm()
     else:
         # no active watch found
-        hunts = Hunt.objects.filter(hunters=request.user.id)
-        # find out if hunter is in unfinished hunt
-        for hunt in hunts:
-            if not hunt.finished:
-                context['onhunt'] = True
-                context['hunt'] = hunt
-                context['huntform'] = HuntSubmit(instance=hunt)
-                break
-
+        hunt = Hunt.objects.filter(hunters=request.user.id, finished=False).first()
+        if hunt:
+            context['onhunt'] = True
+            context['hunt'] = hunt
+            context['huntform'] = HuntSubmit(instance=hunt)
 
     return render(request, 'app/index.html', context)
 """
