@@ -31,7 +31,7 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Watches</h2>
-                {% if user.isPrivileged %}
+                {% if user.isManager %}
                 <a href="{% url "watch_create"%}">
                   <button class="btn btn-primary pull-right" type="button">Add Watch</button>
                 </a>
@@ -56,7 +56,7 @@
                     <td>
                       <form action="{% url "watch_detail"%}" method="GET">
                         <input type="hidden" name="id_watch" value="{{ watch.id }}" />
-                        <a href="#" onclick="parentNode.submit()">                            
+                        <a href="#" onclick="parentNode.submit()">
                         {{ watch.id }}
                         </a>
                         </form>
@@ -89,7 +89,7 @@
                       </form>
                     </td>
                     <td>
-                        {%if watch.active and user.isPrivileged %}
+                        {%if watch.active and user.isManager %}
                         <form action="{% url "watch_end"%}" method="GET">
                             <input type="hidden" name="id_watch" value="{{ watch.id }}" />
                             <a href="#" onclick="parentNode.submit()" class="btn btn-danger btn-xs">

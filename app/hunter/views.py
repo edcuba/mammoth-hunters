@@ -43,7 +43,7 @@ def profile(request):
     cont['hunter'] = hunter
 
     cont['form'] = HunterChangeForm(instance=hunter)
-    if not request.user.isManager():
+    if not request.user.isOfficer():
         for field in cont['form'].fields.values():
             field.widget.attrs['readonly'] = True
     if request.method == 'POST':
@@ -108,7 +108,7 @@ def changePass(request):
     if form.is_valid():
         user = form.save()
         update_session_auth_hash(request, user)
-        messages.success(request, 'Password successfully updated')
+        messages.success(request, 'Password updated')
     else:
         messages.error(request, 'Password update failed!')
     return redirect('hunter_profile')

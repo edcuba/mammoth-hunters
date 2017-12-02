@@ -62,7 +62,8 @@ def gentella_html(request):
 
 def register(request):
 
-    context = {'form': HunterCreationForm}
+    context = {}
+    form  = HunterCreationForm()
 
     if request.method == 'POST':
         # user creation
@@ -82,6 +83,7 @@ def register(request):
         else:
             messages.error(request, "Registration failed")
 
+    context['form'] = form
     return render(request, 'registration/register.html', context)
 
 
@@ -110,6 +112,9 @@ def login(request):
             auth_login(request, user)
 
             return redirect(redirect_to)
+
+        messages.error(request, "Login failed")
+
     else:
         form = authentication_form(request)
 
