@@ -1,5 +1,5 @@
 from django.db.models import Model, CharField, BooleanField
-from django.db.models import IntegerField, ForeignKey, ManyToManyField
+from django.db.models import IntegerField, ForeignKey, ManyToManyField, TextField
 from django.contrib.auth.models import AbstractUser
 from random import randint
 
@@ -102,6 +102,8 @@ class Message(Model):
     """ Message """
     from_watch = ForeignKey(Watch)
     mammoths = ManyToManyField(Mammoth)
+    text = TextField(default=' ')
+    title = CharField(max_length=128, default=' ')
 
 
 class Hunt(Model):

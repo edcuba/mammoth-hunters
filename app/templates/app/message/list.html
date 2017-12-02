@@ -11,18 +11,13 @@
 
 {% block content %}
   <div class="right_col" role="main">
-      <div class="page-title">
-        <div class="title_left">
-          <h3>Inbox Design <small>Some examples to get you started</small></h3>
-        </div>
-      </div>
-      <div class="clearfix"></div>
+
 
       <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
               <div class="x_title">
-                <h2>Daily active users <small>Sessions</small></h2>
+                <h2>Messages</h2>
                 {% if onwatch %}
                 <a href="{% url "message_create"%}">
                   <button class="btn btn-primary pull-right" type="button">Add message</button>
@@ -32,25 +27,27 @@
               </div>
               <div class="x_content">
                 <ul class="list-unstyled timeline">
+                  {%for message in messages%}
                   <li>
                     <div class="block">
                       <div class="tags">
                         <a href="" class="tag">
-                          <span>Entertainment</span>
+                          <span>{{message.id}}</span>
                         </a>
                       </div>
                       <div class="block_content">
                         <h2 class="title">
-                            <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
+                            {{message.title}}
                         </h2>
                         <div class="byline">
-                          <span>13 hours ago</span> by <a>Jane Smith</a>
+                          <span>From watch: </span> <a href="">{{message.from_watch}}</a>
                         </div>
-                        <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and… <a>Read&nbsp;More</a>
+                        <p class="excerpt"> {{message.text}}
                         </p>
                       </div>
                     </div>
                   </li>
+                  {%endfor%}
                 </ul>
               </div>
             </div>
