@@ -24,7 +24,14 @@ def detail(request):
         form = HuntDetails(request.POST, instance=hunt)
         if form.is_valid():
             hunt = form.save()
-            # TODO handle killedMammoth and deadHunters
+            for hunter in hunt.hunters.all():
+                hunter.killedIn = None
+                hunter.save()
+            died = form.cleaned_data.get('deadHunters', [])
+            for hunter in died:
+                hunter.killedIn = hunt
+                hunter.save()
+            return redirect('hunt_list')
     else:
         huntID = request.GET.get('id_hunt')
         request.session['id_hunt'] = huntID
