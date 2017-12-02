@@ -105,6 +105,9 @@ class Message(Model):
     text = TextField(default='', blank=True)
     title = CharField(max_length=128, default='', blank=True)
 
+    def __str__(self):
+        return "[{0}] {1}".format(self.id, self.title)
+
 
 class Hunt(Model):
     """ Hunt """

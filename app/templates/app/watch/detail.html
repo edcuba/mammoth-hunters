@@ -24,21 +24,77 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_content">
-              <h4><b>Location:</b> {{watch.location}}</h4>
-              <h4><b>Status:</b> {%if watch.active%} Active {%else%} Finished {%endif%}</h4>
-              <ul class="list-inline">
-                <li><form><h4><b>Hunters:</b></h4></form></li>
-                {%for hunter in watch.hunters.all%}
-                  <li>
-                    <form action="{% url "hunter_profile"%}" method="GET">
-                        <input type="hidden" name="id_hunter" value="{{ hunter.id }}" />
+              <div class="row">
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                  <h4><b>Watch ID:</b></h4>
+                </div>
+                <div class="col-md-10 col-sm-10 col-xs-12">
+                  <h4>{{watch.id}}</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                  <h4><b>Location:</b></h4>
+                </div>
+                <div class="col-md-10 col-sm-10 col-xs-12">
+                  <h4>{{watch.location}}</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                  <h4><b>Status:</b></h4>
+                </div>
+                <div class="col-md-10 col-sm-10 col-xs-12">
+                  <h4>{%if watch.active%} Active {%else%} Finished {%endif%}</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                  <h4><b>Hunters:</b></h4>
+                </div>
+                <div class="col-md-10 col-sm-10 col-xs-12">
+                  <ul class="list-inline">
+                    {%for hunter in watch.hunters.all%}
+                    <li>
+                      <form action="{% url "hunter_profile"%}" method="GET">
+                          <input type="hidden" name="id_hunter" value="{{ hunter.id }}" />
+                          <a href="#" onclick="parentNode.submit()">
+                            <h4>@{{hunter.username}}<h4>
+                          </a>
+                      </form>
+                    </li>
+                    {%endfor%}
+                  </ul>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                  <h4><b>Messages:</b></h4>
+                </div>
+                <div class="col-md-10 col-sm-10 col-xs-12">
+                  <ul class="list-inline">
+                    {%for message in messages_all%}
+                    <li>
+                      <form action="{% url "message_detail"%}" method="GET">
+                        <input type="hidden" name="id_message" value="{{message.id}}" />
                         <a href="#" onclick="parentNode.submit()">
-                          <h4>@{{hunter.username}}<h4>
+                          <h4>{{message}}</h4>
                         </a>
-                    </form>
-                  </li>
-                {%endfor%}
-              </ul>
+                      </form>
+                    </li>
+                    {%endfor%}
+                  </ul>
+                </div>
+              </div>
+              {%if watch.active and user.isPrivileged %}
+              <form action="{% url "watch_end"%}" method="GET">
+                  <input type="hidden" name="id_watch" value="{{ watch.id }}" />
+                  <a href="#" onclick="parentNode.submit()" class="btn btn-danger">
+                      <i class="fa fa-trash-o"></i>
+                      End watch
+                  </a>
+              </form>
+              {%endif%}
             </div>
           </div>
         </div>

@@ -17,7 +17,7 @@ def messageList(request):
     else:
         cont['onwatch'] = False
 
-    cont['messages'] = Message.objects.all().order_by('-id')
+    cont['messages_all'] = Message.objects.all().order_by('-id')
     return render(request, 'app/message/list.html', cont)
 
 @login_required
@@ -29,8 +29,7 @@ def detail(request):
     message.watch_id = message.from_watch.id
     cont['message'] = message
     cont['mammoths'] = mammoths
-    print("detail")
-    return render(request, 'app/message/create.html', cont)
+    return render(request, 'app/message/detail.html', cont)
 
 @login_required
 def create(request):
