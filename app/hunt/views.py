@@ -20,12 +20,14 @@ def detail(request):
     context = {}
 
     if request.method == 'POST':
-        form = HuntDetails(request.POST)
+        hunt = Hunt.objects.get(pk=request.session['id_hunt'])
+        form = HuntDetails(request.POST, instance=hunt)
         if form.is_valid():
             hunt = form.save()
             # TODO handle killedMammoth and deadHunters
     else:
         huntID = request.GET.get('id_hunt')
+        request.session['id_hunt'] = huntID
         try:
             hunt = Hunt.objects.get(pk=huntID)
             context['form'] = HuntDetails(instance=hunt)

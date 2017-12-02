@@ -80,6 +80,7 @@ def hunterList(request):
             location = '{0} ({1})'.format(location, act)
         hunter.location = location
         hunter.role_name = ROLES[hunter.role][1]
+        #last_hunt = Hunt.objects.filter(killedIn)
         if hunter.killedIn:
             hunter.alive = 'Dead'
         else:

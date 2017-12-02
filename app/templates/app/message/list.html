@@ -23,6 +23,11 @@
             <div class="x_panel">
               <div class="x_title">
                 <h2>Daily active users <small>Sessions</small></h2>
+                {% if onwatch %}
+                <a href="{% url "message_create"%}">
+                  <button class="btn btn-primary pull-right" type="button">Add message</button>
+                </a>
+                {% endif %}
                 <div class="clearfix"></div>
               </div>
               <div class="x_content">
