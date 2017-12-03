@@ -25,9 +25,9 @@ SITE_NAME = basename(DJANGO_ROOT)
 SECRET_KEY = '8*md2t)o**67@*yhc(d=f@j95kl(dnf^rmm4s00$-mh_vurb2b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'http://h00n24.pythonanywhere.com/']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'h00n24.pythonanywhere.com']
 
 # Application definition
 

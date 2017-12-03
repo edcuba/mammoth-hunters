@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="row">
-        {%if user.isPrivileged and not pit.hunt%}
+        {%if user.isManager and not pit.hunt%}
         {% if pit.taken %}
         <form action="{% url "pit_lock"%}" method="GET">
             <input type="hidden" name="id_pit" value="{{ pit.id }}" />
