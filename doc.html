@@ -18,15 +18,15 @@
 <dl>
 	<dt>Autoři</dt>
 	<dd>Eduard Čuba
-	    <a href="mailto:xcubae00@stud.fit.vutbr.cz">xcubae00@stud.fit.vutbr.cz</a> -
-		full stack
+	    <a href="mailto:xcubae00@stud.fit.vutbr.cz">xcubae00@stud.fit.vutbr.cz</a>
 	</dd>
     <dd>Ondrej Kurák
-        <a href="mailto:xkurak00@stud.fit.vutbr.cz">xkurak00@stud.fit.vutbr.cz</a> -
-		full stack
+        <a href="mailto:xkurak00@stud.fit.vutbr.cz">xkurak00@stud.fit.vutbr.cz</a>
 	</dd>
-	<dt>URL aplikace</dt>
-	<dd><a href="http://www.stud.fit.vutbr.cz/~xautor01/IIS">http://www.stud.fit.vutbr.cz/~xautor01/IIS</a></dd>
+	<dt>Git</dt>
+    <dd><a href="https://github.com/edynox/iis">https://github.com/edynox/iis</a></dd>
+    <dt>URL aplikace</dt>
+	<dd><a href="http://h00n24.pythonanywhere.com/">http://h00n24.pythonanywhere.com/</a></dd>
 </dl>
 
 <h2>Uživatelé systému pro testování</h2>
@@ -76,17 +76,37 @@
 </ul>
 
 <h2>Implementace</h2>
+<h3>Use-case</h3>
+Use-case je od pôvodného zadania mierne upravený. Pôvodné zadanie bolo pripravené pre jaskynných ľudí a
+tým pádom so samotnou databázou dokázal narábať iba jeden uživateľ (jediná gramotná osoba). Aktuálny use-case 
+zodpovedá právomociam uživateľov a plne pokrýva pôvodný use-case.
 <p>Stručná dokumentace k implementaci, která popisuje, které PHP skripty implementují jednotlivé případy použití uvedené v use-case diagramu z IDS. V případě, že bylo nutno při implementaci učinit změny v návrhu, musí být v dokumentaci zdůvodněny.</p>
-
+<h3>Modely</h3>
+Modeli sú navrhnuté v súbore <b>app/models.py</b>
 <h2>Instalace</h2>
+<h3>Postup spustenia</h3>
 <ul>
-<li>Stručně popište postup instalace na server</li>
-<li>Softwarové požadavky (verze PHP apod.)</li>
-<li>Jak rozbalit, konfigurovat, inicializovat databází, ...</li>
+    <li>Stiahnuť archív (git clone <a href="https://github.com/edynox/iis">https://github.com/edynox/iis</a>)</li>
+    <li>Nainštalovať knižnice (npm install)</li>
+    <li>Vytvoriť schému databázy (python3 manage.py makemigrations)</li>
+    <li>Aplikovať schému databázy (python3 manage.py migrate)</li>
+    <li>Vytvorenie administrátora (python3 manage.py createsuperuser)</li>    
+    <li>Spustiť server (python3 manage.py runserver)</li>
+</ul>
+<h3>Softwarové požiadavky</h3>
+<ul>
+    <li>Python 3.x</li>
+    <li>Django 1.11.x</li>
+    <li>Javascript package manager (npm)</li>
+</ul>
+<ul>
 </ul>
 
 <h2>Známé problémy</h2>
-<p>Zde popište, které body zadání (IDS a IIS) nejsou implementovány a z jakého důvodu. Např. &bdquo;Z časových důvodů nebyla implementována správa uživatelů.&rdquo; Pomůžete tím zrychlit opravování, když neimplementované funkce nebudeme muset dlouze hledat.</p>
+<ul>
+    <li>Riešenie plne iplmentuje zadanie z IDS (upravený use-case diagram)</li>
+    <li>Riešenie plne iplmentuje zadanie z IIS</li>
+</ul>
 
 </body>
 </html>
