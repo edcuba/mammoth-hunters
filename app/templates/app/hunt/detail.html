@@ -26,7 +26,7 @@
             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Hunt details</a>
                 </li>
-                {%if user.isManager%}                
+                {%if user.isManager%}
                 <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Edit Hunt</a>
                 </li>
                 {%endif%}
@@ -138,8 +138,8 @@
                       <h4>{{hunt.circumstances}}</h4>
                     </div>
                   </div>
-                </div>  
-                
+                </div>
+
                 <!--Edit-->
                 {%if user.isManager%}
                 <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
@@ -164,7 +164,7 @@
                     </div>
                   </div>
                 </div>
-                {%endif%}                    
+                {%endif%}
               </div>
           </div>
         </div>
@@ -175,6 +175,4 @@
 
 {% block javascripts %}
   {{ block.super }}
-  <!-- ECharts -->
-  <script src="{% static "vendors/echarts/dist/echarts.min.js" %}"></script>
 {% endblock javascripts %}
