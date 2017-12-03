@@ -29,10 +29,17 @@ def detail(request):
     if request.method == 'POST':
         hunt = Hunt.objects.get(pk=request.session['id_hunt'])
         form = HuntDetails(request.POST, instance=hunt)
-        # TODO zabit mamuta, nastavit mamutovy health na 0
-        # pri obnoveni na 1 (Ako u huntera)
         if form.is_valid():
             hunt = form.save()
+            killed = form.cleaned_data.get('mammothKilled')
+            mammoth = hunt.target
+            if killed:
+                mammoth.killedIn = hunt
+                mammoth.health = 0
+            else:
+                mammoth.killedIn = None
+                mammoth.health = 1
+            mammoth.save()
             for hunter in hunt.hunters.all():
                 hunter.killedIn = None
                 hunter.health = 1
@@ -60,7 +67,7 @@ def detail(request):
                 hunt.successful = 'No'
         except:
             return redirect('hunt_list')
-    
+
     context['action'] = reverse("hunt_detail")
 
     return render(request, 'app/hunt/detail.html', context)
@@ -75,9 +82,11 @@ def add(request):
         form = HuntForm(request.POST)
 
         context['form'] = form
-
         if form.is_valid():
             hunt = form.save()
+            pit = hunt.pit
+            pit.taken = True
+            pit.save()
             messages.success(request, "Hunt created")
             return redirect("hunt_list")
 
@@ -116,11 +125,15 @@ def submit(request):
 
     died = form.cleaned_data.get('deadHunters', [])
     for hunter in died:
+        hunter.health = 0
         hunter.killedIn = hunt
         hunter.save()
 
     hunt.finished = True
+    pit = hunt.pit
+    pit.taken = False
     hunt.save()
+    pit.save()
 
     messages.success(request, "Hunt report submitted")
     return redirect('index')

@@ -19,7 +19,7 @@ class HuntForm(ModelForm):
                                         Q(killedIn=None))
 
         pits = Pit.objects.filter(taken=False)
-        mammoths = Mammoth.objects.filter(~Q(hunt__in=hunts))
+        mammoths = Mammoth.objects.filter(~Q(hunt__in=hunts) & Q(killedIn=None) & ~Q(health=0))
         self.fields['hunters'].queryset = hunters
         self.fields['pit'].queryset = pits
         self.fields['target'].queryset = mammoths
@@ -50,6 +50,8 @@ class HuntDetails(ModelForm):
 
         if 'finished' in self.fields:
             self.fields['finished'].widget.attrs['class'] = 'flat'
+            if self.instance.finished:
+                self.fields['finished'].widget.attrs['disabled'] = True
 
 
 class HuntSubmit(HuntDetails):

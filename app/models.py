@@ -28,7 +28,6 @@ class Pit(Model):
 
 class Mammoth(Model):
     """ Mammoth """
-    age = IntegerField(default=0)
     health = IntegerField(default=100)
     behavior = CharField(max_length=128)
     symbol = CharField(max_length=128)

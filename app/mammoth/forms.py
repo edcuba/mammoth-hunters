@@ -6,7 +6,7 @@ class MammothForm(ModelForm):
 
     class Meta:
         model = Mammoth
-        fields = ['age', 'health', 'behavior', 'symbol']
+        fields = ['health', 'behavior', 'symbol']
 
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
