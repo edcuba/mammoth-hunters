@@ -58,6 +58,7 @@
                     <th>ID</th>
                     <th>Location</th>
                     <th>Status</th>
+                    <th>Actual hunt</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -76,24 +77,51 @@
                             {{ pit.location }}
                         </td>
                         <td>
+                          <form action="{% url "pit_detail"%}" method="GET">
+                            <input type="hidden" name="id_pit" value="{{pit.id}}" />
                             {% if pit.taken %}
-                            <button type="button" class="btn btn-warning btn-xs">Taken</button>
+                            <a href="#" onclick="parentNode.submit()" class="btn btn-warning btn-xs">Taken</a>
                             {% else %}
-                            <button type="button" class="btn btn-success btn-xs">Available</button>
+                            <a href="#" onclick="parentNode.submit()" class="btn btn-success btn-xs">Available</a>
                             {% endif %}
+                          </form>
                         </td>
                         <td>
-                            {%if user.isPrivileged%}
-                              {% if pit.taken %}
-                              <button type="button" class="btn btn-succes btn-xs">
+                            <form action="{% url "hunt_detail"%}" method="GET">
+                              <input type="hidden" name="id_hunt" value="{{ pit.hunt.id }}" />
+                              <a href="#" onclick="parentNode.submit()">
+                                  {{pit.hunt}}
+                              </a>
+                            </form>
+                        </td>
+                        <td>
+                          {%if user.isPrivileged and not pit.hunt%}
+                          {% if pit.taken %}
+                          <form action="{% url "pit_lock"%}" method="GET">
+                              <input type="hidden" name="id_pit" value="{{ pit.id }}" />
+                              <a href="#" class="btn btn-success btn-xs" onclick="parentNode.submit()">
                                   <i class="fa fa-unlock" aria-hidden="true"></i>
-                                  Unlock</button>
-                              {% else %}
-                              <button type="button" class="btn btn-danger btn-xs">
+                                  Unlock
+                              </a>
+                          </form>
+                          {% else %}
+                          <form action="{% url "pit_lock"%}" method="GET">
+                              <input type="hidden" name="id_pit" value="{{ pit.id }}" />
+                              <a href="#" class="btn btn-danger btn-xs" onclick="parentNode.submit()">
                                   <i class="fa fa-lock" aria-hidden="true"></i>
-                                  Lock</button>
-                              {% endif %}
-                            {% endif %}
+                                  Lock
+                              </a>
+                          </form>
+                          {% endif %}
+                          {%else%}
+                          <form action="{% url "pit_detail"%}" method="GET">
+                            <input type="hidden" name="id_pit" value="{{pit.id}}" />
+                            <a href="#" class="btn btn-primary btn-xs"  onclick="parentNode.submit()">
+                              <i class="fa fa-eye"></i>
+                              View
+                            </a>
+                          </form>
+                          {% endif %}
                         </td>
                     </tr>
                     {% endfor %}

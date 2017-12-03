@@ -52,13 +52,15 @@ def profile(request):
             hunter = cont['form'].save()
 
 
-    cont['hunts'] = Hunt.objects.filter(hunters=hunter.id)
+    cont['hunts'] = Hunt.objects.filter(hunters=hunter.id).order_by('finished', '-id')
     for hunt in cont['hunts']:
-        hunt.location = hunt.pit.location
+        try:
+            if hunt.target.killedIn.id == hunt.id:
+                hunt.successful = 'Yes'
+        except:
+            hunt.successful = 'No'
 
-    cont['watches'] = Watch.objects.filter(hunters=hunter.id)
-    for watch in cont['watches']:
-        watch.location = watch.location
+    cont['watches'] = Watch.objects.filter(hunters=hunter.id).order_by('-active', '-id')
 
     return render(request, 'app/hunter/profile.html', cont)
 
@@ -66,9 +68,9 @@ def profile(request):
 @login_required
 def hunterList(request):
     cont = {}
-    cont['hunters'] = Hunter.objects.all().order_by('killedIn', 'first_name')
+    cont['hunters'] = Hunter.objects.all()
     cont['hunters'] = cont['hunters'].extra(select={'living':"health > '0'"})
-    cont['hunters'] = cont['hunters'].extra(order_by=['-living'])
+    cont['hunters'] = cont['hunters'].extra(order_by=['-living', 'first_name'])
     for hunter in cont['hunters']:
         location = False
         act = ''

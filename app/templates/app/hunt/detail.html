@@ -22,25 +22,150 @@
 
       <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-          <div class="x_panel">
-              {{ error }}
-            <div class="x_content">
-                <form class="form-horizontal form-label-left" method="POST" action="{{action}}">
-                    {% for field in form %}
-                    <div class="form-group">
-                      <label class="control-label col-md-4 col-sm-4 col-xs-12">{{ field.label_tag }}</label>
-                      <div class="col-md-8 col-sm-8 col-xs-12">
-                        {{ field }}
-                      </div>
+          <div class="" role="tabpanel" data-example-id="togglable-tabs">
+            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Hunt details</a>
+                </li>
+                {%if user.isOfficer%}                
+                <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Edit Hunt</a>
+                </li>
+                {%endif%}
+              </ul>
+              <div id="myTabContent" class="tab-content">
+                <!--Hunt view-->
+                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                  <div class="row">
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <h4><b>Hunt ID:</b></h4>
                     </div>
-                    {% endfor %}
-                    {% csrf_token %}
-                    <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4">
-                        <button type="submit" class="btn btn-success">Submit</button>
-                        <button type="reset" class="btn btn-primary">Reset</button>
+                    <div class="col-md-10 col-sm-10 col-xs-12">
+                      <h4>{{hunt.id}}</h4>
                     </div>
-                </form>
-            </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <h4><b>Target:</b></h4>
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-12">
+                      <form action="{% url "mammoth_profile"%}" method="GET">
+                        <input type="hidden" name="id_mammoth" value="{{ hunt.target.id }}" />
+                        <a href="#" onclick="parentNode.submit()">
+                          <h4>{{ hunt.target }}</h4>
+                        </a>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <h4><b>Pit:</b></h4>
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-12">
+                      <form action="{% url "pit_detail"%}" method="GET">
+                        <input type="hidden" name="id_pit" value="{{hunt.pit.id}}" />
+                        <a href="#" onclick="parentNode.submit()">
+                            <h4>{{hunt.pit}}</h4>
+                        </a>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <h4><b>Status:</b></h4>
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-12">
+                      <h4>
+                        {%if hunt.finished%}
+                        Finished
+                        {%else%}
+                        In progress
+                        {%endif%}
+                      </h4>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <h4><b>Successful:</b></h4>
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-12">
+                      <h4>
+                        {{hunt.successful}}
+                      </h4>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <h4><b>Hunters:</b></h4>
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-12">
+                      <ul class="list-inline">
+                        {%for hunter in hunt.hunters.all%}
+                        <li>
+                          <form action="{% url "hunter_profile"%}" method="GET">
+                              <input type="hidden" name="id_hunter" value="{{ hunter.id }}" />
+                              <a href="#" onclick="parentNode.submit()">
+                                <h4>@{{hunter.username}}<h4>
+                              </a>
+                          </form>
+                        </li>
+                        {%endfor%}
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <h4><b>Hunters died:</b></h4>
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-12">
+                      <ul class="list-inline">
+                        {%for hunter in hunt.died.all%}
+                        <li>
+                          <form action="{% url "hunter_profile"%}" method="GET">
+                              <input type="hidden" name="id_hunter" value="{{ hunter.id }}" />
+                              <a href="#" onclick="parentNode.submit()">
+                                <h4>@{{hunter.username}}<h4>
+                              </a>
+                          </form>
+                        </li>
+                        {%endfor%}
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <h4><b>Circumstances:</b></h4>
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-12">
+                      <h4>{{hunt.circumstances}}</h4>
+                    </div>
+                  </div>
+                </div>  
+                
+                <!--Edit-->
+                {%if user.isOfficer%}
+                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                  <div class="x_panel">
+                      {{ error }}
+                    <div class="x_content">
+                        <form class="form-horizontal form-label-left" method="POST" action="{{action}}">
+                            {% for field in form %}
+                            <div class="form-group">
+                              <label class="control-label col-md-4 col-sm-4 col-xs-12">{{ field.label_tag }}</label>
+                              <div class="col-md-8 col-sm-8 col-xs-12">
+                                {{ field }}
+                              </div>
+                            </div>
+                            {% endfor %}
+                            {% csrf_token %}
+                            <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-4 col-sm-offset-4">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button type="reset" class="btn btn-primary">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+                {%endif%}                    
+              </div>
           </div>
         </div>
       </div>

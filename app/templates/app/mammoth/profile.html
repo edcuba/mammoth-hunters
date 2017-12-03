@@ -71,40 +71,105 @@
 
                     <!--Last hunts-->
                     <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                      <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <th>Hunt id</th>
-                            <th>Location</th>
-                            <th>Finished</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {%for hunt in hunts%}
-                          <tr>
-                            <td>
-                              <form action="{% url "hunt_detail"%}" method="GET">
-                                  <input type="hidden" name="id_hunt" value="{{hunt.id}}" />
-                                  <a href="#" onclick="parentNode.submit()">
-                                    {{hunt.id}}
-                                  </a>
-                              </form>
-                            </td>
-                            <td>{{hunt.location}}</td>
-                            <td>{{hunt.finished}} </td>
-                          </tr>
-                          {%endfor%}
-                        </tbody>
-                      </table>
+                      <table class="table table-striped projects">
+                          <thead>
+                            <tr>
+                              <th>ID</th>
+                              <th>Target</th>
+                              <th>Team Members</th>
+                              <th>Pit</th>
+                              <th>Status</th>
+                              <th>Successful</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              {% for hunt in hunts %}
+                              <tr>
+                                  <td>
+                                    <form action="{% url "hunt_detail"%}" method="GET">
+                                      <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
+                                      <a href="#" onclick="parentNode.submit()">
+                                        {{ hunt.id }}
+                                      </a>
+                                    </form>
+                                  </td>
+                                  <td>
+                                      <form action="{% url "mammoth_profile"%}" method="GET">
+                                          <input type="hidden" name="id_mammoth" value="{{ hunt.target.id }}" />
+                                          <a href="#" onclick="parentNode.submit()">
+                                              {{ hunt.target }}
+                                          </a>
+                                      </form>
+                                  </td>
+                                  <td>
+                                    <ul class="list-inline">
+                                          {% for hunter in hunt.hunters.all %}
+                                          <li>
+                                              <form action="{% url "hunter_profile"%}" method="GET">
+                                                  <input type="hidden" name="id_hunter" value="{{ hunter.id }}" />
+                                                  <a href="#" onclick="parentNode.submit()">
+                                                      <img title="{{ hunter.username }}" src="{% static "images/fred.png" %}" class="avatar">
+                                                  </a>
+                                              </form>
+                                          </li>
+                                          {% endfor %}
+                                    </ul>
+                                  </td>
+                                  <td>
+                                    <form action="{% url "pit_detail"%}" method="GET">
+                                      <input type="hidden" name="id_pit" value="{{hunt.pit.id}}" />
+                                      <a href="#" onclick="parentNode.submit()">
+                                          {{hunt.pit}}
+                                      </a>
+                                    </form>
+                                  </td>
+                                  <td>
+                                    <form action="{% url "hunt_detail"%}" method="GET">
+                                      <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
+                                      {% if hunt.finished %}
+                                      <a href="#" onclick="parentNode.submit()" class="btn btn-success btn-xs">Finished</a>
+                                      {% else %}
+                                      <a href="#" onclick="parentNode.submit()" class="btn btn-warning btn-xs">In progress</a>
+                                      {% endif %}
+                                    </form>
+                                  </td>
+                                  <td>
+                                    <form action="{% url "hunt_detail"%}" method="GET">
+                                      <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
+                                      <a href="#" onclick="parentNode.submit()"
+                                        {%if hunt.successful == "Yes"%}
+                                          class="btn btn-success btn-xs"
+                                        {%else%}
+                                          class="btn btn-danger btn-xs"
+                                        {%endif%}
+                                      >
+                                      {{hunt.successful}}
+                                      </a>
+                                    </form>
+                                  </td>
+                                  <td>
+                                    <form action="{% url "hunt_detail"%}" method="GET">
+                                      <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
+                                      <a href="#" onclick="parentNode.submit()" class="btn btn-primary btn-xs">
+                                          <i class="fa fa-eye"></i>
+                                          View
+                                      </a>
+                                    </form>
+                                  </td>
+                              </tr>
+                              {% endfor %}
+                          </tbody>
+                        </table>
                     </div>
 
                     <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
                       <table class="table table-striped">
                         <thead>
                           <tr>
-                            <th>Message id</th>
+                            <th>Message</th>
                             <th>From watch</th>
-                            <th>Location</th>
+                            <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -114,7 +179,7 @@
                                   <form action="{% url "message_detail"%}" method="GET">
                                       <input type="hidden" name="id_message" value="{{message.id}}" />
                                       <a href="#" onclick="parentNode.submit()">
-                                        {{message.id}}
+                                        {{message}}
                                       </a>
                                   </form>
                                 </td>
@@ -126,7 +191,15 @@
                                       </a>
                                   </form>
                                 </td>
-                                <td>{{message.location}} </td>
+                                <td>
+                                  <form action="{% url "message_detail"%}" method="GET">
+                                    <input type="hidden" name="id_message" value="{{ message.id }}" />
+                                    <a href="#" onclick="parentNode.submit()" class="btn btn-primary btn-xs">
+                                        <i class="fa fa-eye"></i>
+                                        View
+                                    </a>
+                                  </form>
+                                </td>
                               </tr>
                             {%endfor%}
                         </tbody>

@@ -49,8 +49,34 @@
           <h4><b>Actual hunt:</b></h4>
         </div>
         <div class="col-md-10 col-sm-10 col-xs-12">
-            <h4>{{pit.hunt}}</h4>
+          <form action="{% url "hunt_detail"%}" method="GET">
+              <input type="hidden" name="id_hunt" value="{{ pit.hunt.id }}" />
+              <a href="#" onclick="parentNode.submit()">
+                  <h4>{{pit.hunt}}</h4>
+              </a>
+          </form>
         </div>
+      </div>
+      <div class="row">
+        {%if user.isPrivileged and not pit.hunt%}
+        {% if pit.taken %}
+        <form action="{% url "pit_lock"%}" method="GET">
+            <input type="hidden" name="id_pit" value="{{ pit.id }}" />
+            <a href="#" class="btn btn-success btn" onclick="parentNode.submit()">
+                <i class="fa fa-unlock" aria-hidden="true"></i>
+                Unlock
+            </a>
+        </form>
+        {% else %}
+        <form action="{% url "pit_lock"%}" method="GET">
+            <input type="hidden" name="id_pit" value="{{ pit.id }}" />
+            <a href="#" class="btn btn-danger btn" onclick="parentNode.submit()">
+                <i class="fa fa-lock" aria-hidden="true"></i>
+                Lock
+            </a>
+        </form>
+        {% endif %}
+        {% endif %}
       </div>
     </div>
   </div>

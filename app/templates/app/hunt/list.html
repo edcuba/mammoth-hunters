@@ -34,16 +34,19 @@
                     <th>Pit</th>
                     <th>Status</th>
                     <th>Successful</th>
-                    {% if user.isOfficer %}
                     <th>Action</th>
-                    {% endif %}
                   </tr>
                 </thead>
                 <tbody>
                     {% for hunt in hunts %}
                     <tr>
                         <td>
-                            {{ hunt.id }}
+                          <form action="{% url "hunt_detail"%}" method="GET">
+                            <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
+                            <a href="#" onclick="parentNode.submit()">
+                              {{ hunt.id }}
+                            </a>
+                          </form>
                         </td>
                         <td>
                             <form action="{% url "mammoth_profile"%}" method="GET">
@@ -68,33 +71,46 @@
                           </ul>
                         </td>
                         <td>
-                            {{ hunt.pit }}
+                          <form action="{% url "pit_detail"%}" method="GET">
+                            <input type="hidden" name="id_pit" value="{{hunt.pit.id}}" />
+                            <a href="#" onclick="parentNode.submit()">
+                                {{hunt.pit}}
+                            </a>
+                          </form>
                         </td>
                         <td>
+                          <form action="{% url "hunt_detail"%}" method="GET">
+                            <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
                             {% if hunt.finished %}
-                            <button type="button" class="btn btn-success btn-xs">Finished</button>
+                            <a href="#" onclick="parentNode.submit()" class="btn btn-success btn-xs">Finished</a>
                             {% else %}
-                            <button type="button" class="btn btn-warning btn-xs">In progress</button>
+                            <a href="#" onclick="parentNode.submit()" class="btn btn-warning btn-xs">In progress</a>
                             {% endif %}
+                          </form>
                         </td>
                         <td>
-                          {%if hunt.successful == "Yes"%}
-                          <button type="button" class="btn btn-success btn-xs">Yes</button>
-                          {%else%}
-                          <button type="button" class="btn btn-danger btn-xs">No</button>
-                          {%endif%}
+                          <form action="{% url "hunt_detail"%}" method="GET">
+                            <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
+                            <a href="#" onclick="parentNode.submit()"
+                              {%if hunt.successful == "Yes"%}
+                                class="btn btn-success btn-xs"
+                              {%else%}
+                                class="btn btn-danger btn-xs"
+                              {%endif%}
+                            >
+                            {{hunt.successful}}
+                            </a>
+                          </form>
                         </td>
-                        {% if user.isOfficer %}
                         <td>
-                            <form action="{% url "hunt_detail"%}" method="GET">
-                                <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
-                                <a href="#" onclick="parentNode.submit()" class="btn btn-primary btn-xs">
-                                    <i class="fa fa-pencil"></i>
-                                    Edit
-                                </a>
-                            </form>
+                          <form action="{% url "hunt_detail"%}" method="GET">
+                            <input type="hidden" name="id_hunt" value="{{ hunt.id }}" />
+                            <a href="#" onclick="parentNode.submit()" class="btn btn-primary btn-xs">
+                                <i class="fa fa-eye"></i>
+                                View
+                            </a>
+                          </form>
                         </td>
-                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>

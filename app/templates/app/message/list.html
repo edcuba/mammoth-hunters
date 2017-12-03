@@ -37,9 +37,15 @@
                         </form>
                       </div>
                       <div class="block_content">
-                        <h2 class="title">
-                            {{message}}
-                        </h2>
+                          <form action="{% url "message_detail"%}" method="GET">
+                            <input type="hidden" name="id_message" value="{{message.id}}" />
+                            <a href="#" onclick="parentNode.submit()">
+                              <h2 class="title">
+                                {{message}}
+                              </h2>
+                            </a>
+                          </form>
+                        
                         <div class="byline">
                           <form action="{% url "watch_detail"%}" method="GET">
                             <span>From watch: </span>

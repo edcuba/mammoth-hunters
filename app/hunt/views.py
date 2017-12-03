@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from ..models import Hunt
+from ..models import Hunt, Hunter
 from .forms import HuntDetails, HuntForm, HuntSubmit
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -22,21 +22,25 @@ def huntList(request):
     return render(request, 'app/hunt/list.html', context)
 
 @login_required
-@user_passes_test(privileged_check)
+#@user_passes_test(privileged_check)
 def detail(request):
     context = {}
 
     if request.method == 'POST':
         hunt = Hunt.objects.get(pk=request.session['id_hunt'])
         form = HuntDetails(request.POST, instance=hunt)
+        # TODO zabit mamuta, nastavit mamutovy health na 0
+        # pri obnoveni na 1 (Ako u huntera)
         if form.is_valid():
             hunt = form.save()
             for hunter in hunt.hunters.all():
                 hunter.killedIn = None
+                hunter.health = 1
                 hunter.save()
             died = form.cleaned_data.get('deadHunters', [])
             for hunter in died:
                 hunter.killedIn = hunt
+                hunter.health = 0
                 hunter.save()
             messages.success(request, "Hunt updated")
             return redirect('hunt_list')
@@ -47,9 +51,16 @@ def detail(request):
         try:
             hunt = Hunt.objects.get(pk=huntID)
             context['form'] = HuntDetails(instance=hunt)
+            context['hunt'] = hunt
+            hunt.died = Hunter.objects.filter(killedIn=hunt.id)
+            try:
+                if hunt.target.killedIn.id == hunt.id:
+                    hunt.successful = 'Yes'
+            except:
+                hunt.successful = 'No'
         except:
             return redirect('hunt_list')
-
+    
     context['action'] = reverse("hunt_detail")
 
     return render(request, 'app/hunt/detail.html', context)

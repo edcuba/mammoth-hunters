@@ -39,11 +39,15 @@ def profile(request):
     else:
         mammoth.status = 'Dead'
 
-    cont['hunts'] = Hunt.objects.filter(target=mammoth.id)
+    cont['hunts'] = Hunt.objects.filter(target=mammoth.id).order_by('finished', '-id')
     for hunt in cont['hunts']:
-        hunt.location = hunt.pit.location
+        try:
+            if hunt.target.killedIn.id == hunt.id:
+                hunt.successful = 'Yes'
+        except:
+            hunt.successful = 'No'
 
-    cont['last_messages'] = Message.objects.filter(mammoths=mammoth.id)
+    cont['last_messages'] = Message.objects.filter(mammoths=mammoth.id).order_by('-id')
     for message in cont['last_messages']:
         message.location = message.from_watch.location
 
@@ -70,9 +74,9 @@ def profile(request):
 def mammothList(request):
     cont = {}
 
-    cont['mammoths'] = Mammoth.objects.all().order_by('killedIn', '-hunt', '-id')
+    cont['mammoths'] = Mammoth.objects.all()
     cont['mammoths'] = cont['mammoths'].extra(select={'living':"health > '0'"})
-    cont['mammoths'] = cont['mammoths'].extra(order_by=['-living'])
+    cont['mammoths'] = cont['mammoths'].extra(order_by=['-living', '-hunt', '-id'])
     for mammoth in cont['mammoths']:
         try:
             tmp_loc = Message.objects.filter(mammoths=mammoth.id).latest('id')
