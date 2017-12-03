@@ -24,8 +24,10 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="" role="tabpanel" data-example-id="togglable-tabs">
             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                {%if hunt.id%}
                 <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Hunt details</a>
                 </li>
+                {%endif%}
                 {%if user.isManager%}
                 <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Edit Hunt</a>
                 </li>
@@ -33,7 +35,10 @@
               </ul>
               <div id="myTabContent" class="tab-content">
                 <!--Hunt view-->
+                {%if hunt.id%}
                 <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                  <div class="x_panel">
+                  <div class="x_content">
                   <div class="row">
                     <div class="col-md-2 col-sm-2 col-xs-12">
                       <h4><b>Hunt ID:</b></h4>
@@ -138,11 +143,18 @@
                       <h4>{{hunt.circumstances}}</h4>
                     </div>
                   </div>
+                  </div>
+                  </div>
                 </div>
-
+                {%endif%}
+                
                 <!--Edit-->
                 {%if user.isManager%}
-                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                {%if not hunt.id%}                
+                  <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                {%else%}
+                  <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                {%endif%}
                   <div class="x_panel">
                       {{ error }}
                     <div class="x_content">
