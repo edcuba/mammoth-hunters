@@ -38,6 +38,18 @@
 <tr><td>jozef</td><td>1234567a</td><td>Hunter</td></tr>
 </table>
 
+<h2>Implementace</h2>
+<h3>Use-case</h3>
+<a href="http://www.stud.fit.vutbr.cz/~xcubae00/usecase.pdf">
+    http://www.stud.fit.vutbr.cz/~xcubae00/usecase.pdf
+</a>
+<p>
+    Use-case je od pôvodného zadania z IUS/IDS mierne upravený.
+    Pôvodné zadanie bolo pripravené pre jaskynných ľudí
+    a so samotnou databázou dokázal narábať iba jeden uživateľ (jediná gramotná osoba - kamenotepec).
+    Aktuálny use-case zodpovedá nasledujúcim právomociam uživateľov a plne pokrýva pôvodný use-case.
+</p>
+
 <h2>Právomoci užívateľov</h2>
 
 <h4>Všetci</h4>
@@ -75,42 +87,56 @@
     <li>Všetky právomoci (pomocou rozhrania pre administrátora)</li>
 </ul>
 
-<h2>Implementace</h2>
-<h3>Use-case</h3>
-Use-case je od pôvodného zadania mierne upravený. Pôvodné zadanie bolo pripravené pre jaskynných ľudí a
-tým pádom so samotnou databázou dokázal narábať iba jeden uživateľ (jediná gramotná osoba). Aktuálny use-case 
-zodpovedá právomociam uživateľov a plne pokrýva pôvodný use-case.
-<p>Stručná dokumentace k implementaci, která popisuje, které PHP skripty implementují jednotlivé případy použití uvedené v use-case diagramu z IDS. V případě, že bylo nutno při implementaci učinit změny v návrhu, musí být v dokumentaci zdůvodněny.</p>
 <h3>Modely</h3>
-Modely sú navrhnuté v súbore <b>app/models.py</b>
+Modely pre databázové objekty sú navrhnuté v súbore <b>app/models.py</b>
+
 <h3>Html šablóny</h3>
-Všetky html šablóny projektu sa nachádzajú v <b>app/templates/</b> kde sú následne rozdelené podľa jednotlivých stránok.
+Všetky html šablóny projektu sa nachádzajú v <b>app/templates/</b>,
+kde sú následne rozdelené podľa jednotlivých stránok.
+
 <h3>Implementácia prípadov užitia</h3>
-Pre každú stránku sú vytvorené súbory <b>forms.py</b>, <b>view.py</b> a <b>urls.py</b> kde <b>forms.py</b> zastrešujú formuláre, <b>view.py</b> zastrešujú funkcionalitu a <b>urls.py</b> url odkazy danej stránky.
+<p>
+    Aplikácia je rozdelená do modulov podľa ich funkcionality.
+    Backend ku prihlasovaniu, registrácii a dashboardu je napísaný v hlavnom module <b>app/</b>.
+    Skripty pre vytváranie, prezeranie a úpravu modelov sú:
+    <b>app/hunt</b> pre lov,
+    <b>app/hunter</b> pre lovca,
+    <b>app/mammoth</b> pre mamuta,
+    <b>app/message</b> pre správu z hliadky,
+    <b>app/pit</b> pre loveckú jamu a
+    <b>app/watch</b> pre loveckú hliadku.
+</p>
+<p>
+    V každom module sú súbory <b>forms.py</b>, <b>view.py</b> a <b>urls.py</b>
+    kde <b>forms.py</b> zastrešujú modely formulárov, <b>view.py</b> zastrešujú funkcionalitu a logiku
+    daného zobrazenia a <b>urls.py</b> url odkazy danej stránky.
+</p>
 
 <h2>Instalace</h2>
+
 <h3>Postup spustenia</h3>
 <ul>
-    <li>Stiahnuť archív (git clone <a href="https://github.com/edynox/iis">https://github.com/edynox/iis</a>)</li>
+    <li>Stiahnuť repozitár (git clone <a href="https://github.com/edynox/iis">https://github.com/edynox/iis</a>)</li>
     <li>Nainštalovať knižnice (npm install)</li>
     <li>Vytvoriť schému databázy (python3 manage.py makemigrations)</li>
     <li>Aplikovať schému databázy (python3 manage.py migrate)</li>
-    <li>Vytvorenie administrátora (python3 manage.py createsuperuser)</li>    
+    <li>Vytvorenie administrátora (python3 manage.py createsuperuser)</li>
     <li>Spustiť server (python3 manage.py runserver)</li>
 </ul>
+
 <h3>Softwarové požiadavky</h3>
 <ul>
     <li>Python 3.x</li>
     <li>Django 1.11.x</li>
-    <li>Javascript package manager (npm)</li>
+    <li>Node.js package manager (npm)</li>
 </ul>
 <ul>
 </ul>
 
 <h2>Známé problémy</h2>
 <ul>
-    <li>Riešenie plne iplmentuje zadanie z IDS (upravený use-case diagram)</li>
-    <li>Riešenie plne iplmentuje zadanie z IIS</li>
+    <li>Riešenie plne implementuje zadanie z IDS (upravený use-case diagram)</li>
+    <li>Riešenie plne implementuje zadanie z IIS</li>
 </ul>
 
 </body>
